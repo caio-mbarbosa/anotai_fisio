@@ -1,2 +1,2 @@
-# SmartEER
+# SmartEHR
 Disciplina de projetão
