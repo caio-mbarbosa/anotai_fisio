@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 
 import 'package:anotai_fisio/audio_player.dart';
-
+import 'transcribe.dart';
 
 class AudioRecorder extends StatefulWidget {
   final void Function(String path) onStop;
@@ -237,24 +237,24 @@ class _RecordingState extends State<Recording> {
       home: Scaffold(
         body: Center(
           child: showPlayer
-              ? Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 25),
-            child: AudioPlayer(
-              source: audioPath!,
-              onDelete: () {
-                setState(() => showPlayer = false);
-              },
-            ),
-          )
+              ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
+                  AudioPlayer(
+                    source: audioPath!,
+                    onDelete: () {
+                      setState(() => showPlayer = false);
+                    },
+                  ),
+                  Transcribe(audioPath: audioPath!)
+                ])
               : AudioRecorder(
-            onStop: (path) {
-              if (kDebugMode) print('Recorded file path: $path');
-              setState(() {
-                audioPath = path;
-                showPlayer = true;
-              });
-            },
-          ),
+                  onStop: (path) {
+                    if (kDebugMode) print('Recorded file path: $path');
+                    setState(() {
+                      audioPath = path;
+                      showPlayer = true;
+                    });
+                  },
+                ),
         ),
       ),
     );
