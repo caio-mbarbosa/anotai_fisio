@@ -3,9 +3,9 @@ import 'dart:convert';
 
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// Colocar sua chave API numa variável chamada apiSecretKey em constant.dart
 import 'constant.dart';
 import 'package:http/http.dart' as http;
+import 'package:gsheets/gsheets.dart';
 
 class Transcribe extends StatefulWidget {
   final String? audioPath;
@@ -41,6 +41,40 @@ class _TranscribeState extends State<Transcribe> {
 
     return responseData['text'];
   }
+
+  Future<void> main_service(String texto) async {
+
+    final gsheets = GSheets(credentials);
+    final ss = await gsheets.spreadsheet(spreadsheetId);
+    var sheet = ss.worksheetByTitle('Teste');
+
+    final campos = await sheet?.cells.row(1);
+
+    final apiKey = apiSecretKey;
+    final prompt = '''
+    Dados os campos a seguir: $campos, formate o texto estruturado para o formato JSON com apenas
+    as chaves inclusas nos campos previstos,
+    responda APENAS com o json e NADA mais, esse é o texto:
+    $texto
+    ''';
+
+    final response = await http.post(
+      Uri.parse('https://api.openai.com/v1/engines/davinci-codex/completions'),
+      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $apiKey'},
+      body: jsonEncode({'prompt': prompt}),
+    );
+
+    if (response.statusCode == 200) {
+      final responseBody = jsonDecode(response.body);
+      final textoJson = responseBody['choices'][0]['text'];
+      await sheet?.values.map.appendRow(textoJson);
+      print('Dados inseridos com sucesso na planilha.');
+    } else {
+      print('Error: ${response.statusCode}');
+    }
+
+  }
+
 
   @override
   Widget build(BuildContext context) {
