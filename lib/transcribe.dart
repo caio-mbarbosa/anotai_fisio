@@ -6,6 +6,7 @@ import 'package:flutter/material.dart';
 import 'constant.dart';
 import 'package:http/http.dart' as http;
 import 'package:gsheets/gsheets.dart';
+import 'package:dart_openai/dart_openai.dart';
 
 class Transcribe extends StatefulWidget {
   final String? audioPath;
@@ -50,7 +51,7 @@ class _TranscribeState extends State<Transcribe> {
 
     final campos = await sheet?.cells.row(1);
 
-    final apiKey = apiSecretKey;
+    OpenAI.apiKey = apiSecretKey;
     final prompt = '''
     Dados os campos a seguir: $campos, formate o texto estruturado para o formato JSON com apenas
     as chaves inclusas nos campos previstos,
@@ -58,20 +59,19 @@ class _TranscribeState extends State<Transcribe> {
     $texto
     ''';
 
-    final response = await http.post(
-      Uri.parse('https://api.openai.com/v1/engines/davinci-codex/completions'),
-      headers: {'Content-Type': 'application/json', 'Authorization': 'Bearer $apiKey'},
-      body: jsonEncode({'prompt': prompt}),
-    );
+    OpenAIChatCompletionModel chatCompletion =
+    await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
+      OpenAIChatCompletionChoiceMessageModel(
+        content: prompt,
+        role: OpenAIChatMessageRole.user,
+      )
+    ]);
 
-    if (response.statusCode == 200) {
-      final responseBody = jsonDecode(response.body);
-      final textoJson = responseBody['choices'][0]['text'];
-      await sheet?.values.map.appendRow(textoJson);
-      print('Dados inseridos com sucesso na planilha.');
-    } else {
-      print('Error: ${response.statusCode}');
-    }
+    print(chatCompletion.id);
+    print(chatCompletion.choices.first.message);
+    // Inserir na planilha:
+    //await sheet?.values.map.appendRow(textoJson);
+    //print('Dados inseridos com sucesso na planilha.');
 
   }
 
