@@ -1,4 +1,4 @@
-const apiSecretKey = "";
+const apiSecretKey = "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";
 const credentials = {
   "type": "service_account",
   "project_id": "deep-hook-391301",

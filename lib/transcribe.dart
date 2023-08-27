@@ -75,7 +75,6 @@ class _TranscribeState extends State<Transcribe> {
 
   }
 
-
   @override
   Widget build(BuildContext context) {
     return LayoutBuilder(builder: (context, constraints) {
@@ -84,15 +83,16 @@ class _TranscribeState extends State<Transcribe> {
         onPressed: () async {
           print("Apertou");
           print(widget.audioPath);
-          // Quando tivermos uma chave funcionando podemos testar o retorno
-          // if (audioPath != null) {
-          //   //call openai's transcription api
-          //   convertSpeechToText(audioPath!).then((value) {
-          //     setState(() {
-          //       text = value;
-          //     });
-          //   });
-          // }
+            //Quando tivermos uma chave funcionando podemos testar o retorno
+            if (widget.audioPath != null) {
+              //call openai's transcription api
+              convertSpeechToText(widget.audioPath!).then((value) {
+                setState(() {
+                  text = value;
+                  print(text);
+               });
+            });
+          }
         },
         child: Text(" Submeter Áudio "),
       ));

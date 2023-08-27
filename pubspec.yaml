@@ -34,8 +34,8 @@ dependencies:
   audioplayers: ^5.1.0
   path: ^1.8.0
   path_provider: ^2.0.1
-  gsheets:
-  dart_openai:
+  gsheets: any
+  dart_openai: any
 
 
   # The following adds the Cupertino Icons font to your application.

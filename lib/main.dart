@@ -8,7 +8,11 @@ import 'package:anotai_fisio/audio_player.dart';
 import 'record.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp()));
+  runApp(MaterialApp(
+      home: MyApp(),
+      debugShowCheckedModeBanner: false
+    )
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -32,9 +36,9 @@ class MyApp extends StatelessWidget {
           children: [
             const DrawerHeader(
               decoration: BoxDecoration(
-                color: Colors.blue,
+                color: const Color(0xff764abc),
               ),
-              child: Text('Drawer Header'),
+              child: Text('Menu'),
             ),
             ListTile(
               leading: Icon(
@@ -52,7 +56,7 @@ class MyApp extends StatelessWidget {
               leading: Icon(
                 Icons.train,
               ),
-              title: const Text('Page 2'),
+              title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
               },
