@@ -38,24 +38,23 @@ class _TranscribeState extends State<Transcribe> {
     request.files.add(await http.MultipartFile.fromPath('file', filePath));
     var response = await request.send();
     var newresponse = await http.Response.fromStream(response);
-    final responseData = json.decode(newresponse.body);
-
+    final responseData = json.decode(utf8.decode(newresponse.bodyBytes));
     return responseData['text'];
   }
 
   Future<void> main_service(String texto) async {
-
+    print("comecando gpt...");
     final gsheets = GSheets(credentials);
     final ss = await gsheets.spreadsheet(spreadsheetId);
     var sheet = ss.worksheetByTitle('Teste');
 
-    final campos = await sheet?.cells.row(1);
-
+    final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
-    Dados os campos a seguir: $campos, formate o texto estruturado para o formato JSON com apenas
-    as chaves inclusas nos campos previstos,
-    responda APENAS com o json e NADA mais, esse é o texto:
+    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir 
+    as informações da conversa nos campos a seguir: $campos, formate o resultado da sua análise para o 
+    formato JSON com apenas as chaves inclusas nos campos previstos (podem existir campos vazios caso não sejam mencionados na conversa),
+    responda APENAS com o JSON e NADA mais, esse é o texto:
     $texto
     ''';
 
@@ -67,11 +66,13 @@ class _TranscribeState extends State<Transcribe> {
       )
     ]);
 
-    print(chatCompletion.id);
-    print(chatCompletion.choices.first.message);
+    print(chatCompletion.choices.first.message.content);
+    var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
-    //await sheet?.values.map.appendRow(textoJson);
-    //print('Dados inseridos com sucesso na planilha.');
+    if(resultadoGpt != null){
+      await sheet?.values.map.appendRow(resultadoGpt);
+    }
+    print('Dados inseridos com sucesso na planilha.');
 
   }
 
@@ -80,22 +81,23 @@ class _TranscribeState extends State<Transcribe> {
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
           child: ElevatedButton(
-        onPressed: () async {
-          print("Apertou");
-          print(widget.audioPath);
-            //Quando tivermos uma chave funcionando podemos testar o retorno
-            if (widget.audioPath != null) {
-              //call openai's transcription api
-              convertSpeechToText(widget.audioPath!).then((value) {
-                setState(() {
-                  text = value;
-                  print(text);
-               });
-            });
-          }
-        },
-        child: Text(" Submeter Áudio "),
-      ));
+            onPressed: () async {
+              print("Apertou");
+              print(widget.audioPath);
+              //Quando tivermos uma chave funcionando podemos testar o retorno
+              if (widget.audioPath != null) {
+                //call openai's transcription api
+                convertSpeechToText(widget.audioPath!).then((value) {
+                  setState(() {
+                    text = value;
+                    print(text);
+                    if(text != null) main_service(text!);
+                  });
+                });
+              }
+            },
+            child: Text(" Submeter Áudio "),
+          ));
     });
   }
 }

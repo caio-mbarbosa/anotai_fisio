@@ -11,7 +11,7 @@ void main() {
   runApp(MaterialApp(
       home: MyApp(),
       debugShowCheckedModeBanner: false
-    )
+  )
   );
 }
 
@@ -76,5 +76,3 @@ class MyApp extends StatelessWidget {
     );
   }
 }
-
-

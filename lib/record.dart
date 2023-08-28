@@ -238,23 +238,23 @@ class _RecordingState extends State<Recording> {
         body: Center(
           child: showPlayer
               ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  AudioPlayer(
-                    source: audioPath!,
-                    onDelete: () {
-                      setState(() => showPlayer = false);
-                    },
-                  ),
-                  Transcribe(audioPath: audioPath!)
-                ])
+            AudioPlayer(
+              source: audioPath!,
+              onDelete: () {
+                setState(() => showPlayer = false);
+              },
+            ),
+            Transcribe(audioPath: audioPath!)
+          ])
               : AudioRecorder(
-                  onStop: (path) {
-                    if (kDebugMode) print('Recorded file path: $path');
-                    setState(() {
-                      audioPath = path;
-                      showPlayer = true;
-                    });
-                  },
-                ),
+            onStop: (path) {
+              if (kDebugMode) print('Recorded file path: $path');
+              setState(() {
+                audioPath = path;
+                showPlayer = true;
+              });
+            },
+          ),
         ),
       ),
     );
