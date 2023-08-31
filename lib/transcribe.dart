@@ -51,10 +51,8 @@ class _TranscribeState extends State<Transcribe> {
     final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
-    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir 
-    as informações da conversa nos campos a seguir: $campos, formate o resultado da sua análise para o 
-    formato JSON com apenas as chaves inclusas nos campos previstos (podem existir campos vazios caso não sejam mencionados na conversa),
-    responda APENAS com o JSON e NADA mais, esse é o texto:
+    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:
+    
     $texto
     ''';
 
