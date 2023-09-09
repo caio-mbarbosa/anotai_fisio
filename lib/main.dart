@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:anotai_fisio/views/pacients_view.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
@@ -59,6 +60,18 @@ class MyApp extends StatelessWidget {
               title: const Text('Home'),
               onTap: () {
                 Navigator.pop(context);
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.train,
+              ),
+              title: const Text('Cadastrar Paciente'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PacientsView()),
+                );
               },
             ),
           ],
