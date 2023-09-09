@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:anotai_fisio/views/pacients.dart';
 
 class Home extends StatelessWidget {
   @override
@@ -74,7 +75,13 @@ class Home extends StatelessWidget {
                     width: 200 * fem,
                     height: 40 * fem,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PacientsView()),
+                        );
+                      },
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         backgroundColor: Color.fromRGBO(247, 242, 250, 1),

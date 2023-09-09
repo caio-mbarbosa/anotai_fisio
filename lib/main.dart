@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -40,7 +41,7 @@ class MyApp extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.home,
+                Icons.record_voice_over,
               ),
               title: const Text('Gravação'),
               onTap: () {
@@ -52,13 +53,25 @@ class MyApp extends StatelessWidget {
             ),
             ListTile(
               leading: Icon(
-                Icons.train,
+                Icons.home,
               ),
               title: const Text('Home'),
               onTap: () {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => Home()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.start,
+              ),
+              title: const Text('Start'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Start()),
                 );
               },
             ),
