@@ -7,13 +7,10 @@ import 'package:record/record.dart';
 
 import 'package:anotai_fisio/audio_player.dart';
 import 'record.dart';
+import 'home.dart';
 
 void main() {
-  runApp(MaterialApp(
-      home: MyApp(),
-      debugShowCheckedModeBanner: false
-  )
-  );
+  runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
 }
 
 class MyApp extends StatelessWidget {
@@ -59,7 +56,10 @@ class MyApp extends StatelessWidget {
               ),
               title: const Text('Home'),
               onTap: () {
-                Navigator.pop(context);
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Home()),
+                );
               },
             ),
             ListTile(
