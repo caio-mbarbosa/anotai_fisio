@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-class PacientsView extends StatelessWidget {
+class OldPacientsView extends StatelessWidget {
   final double fem = 1;
   final double ffem = 1.5;
 
