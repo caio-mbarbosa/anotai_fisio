@@ -79,7 +79,7 @@ class Home extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PacientsView()),
+                              builder: (context) => PacientsList()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

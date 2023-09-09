@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 class Pacient{
+    final String id;
     final String name;
     final int age;
     final String sex;
@@ -11,6 +12,7 @@ class Pacient{
     // final String naturalidade;
 
     const Pacient({
+      required this.id,
       required this.name,
       required this.age,
       required this.sex,
