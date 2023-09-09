@@ -84,7 +84,7 @@ class MyApp extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PacientsView()),
+                  MaterialPageRoute(builder: (context) => PacientsListProvider()),
                 );
               },
             ),
