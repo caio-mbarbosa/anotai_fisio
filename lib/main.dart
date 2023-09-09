@@ -2,6 +2,7 @@ import 'dart:async';
 
 import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
+import 'package:anotai_fisio/views/customize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
@@ -84,6 +85,18 @@ class MyApp extends StatelessWidget {
                 Navigator.push(
                   context,
                   MaterialPageRoute(builder: (context) => PacientsView()),
+                );
+              },
+            ),
+            ListTile(
+              leading: Icon(
+                Icons.addchart_sharp,
+              ),
+              title: const Text('Customizar Prontuários'),
+              onTap: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => CustomizeView()),
                 );
               },
             ),

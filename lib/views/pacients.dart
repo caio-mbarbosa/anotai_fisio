@@ -18,7 +18,7 @@ class PacientsView extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: pacients.length,
-          itemBuilder: (ctx, i) => PacientTile(pacients.values.elementAt(i)),
+        itemBuilder: (ctx, i) => PacientTile(pacients.values.elementAt(i)),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -38,16 +38,16 @@ class PacientTile extends StatelessWidget{
   Widget build(BuildContext context){
     final avatar = CircleAvatar(child: Icon(Icons.person, color: Colors.white70,), backgroundColor: Colors.deepPurple,);
     return ListTile(
-      leading: avatar,
-      title: Text(pacient.name),
-      trailing: Container(
-        width: 100,
-        child: Row(
-          children: <Widget>[
-            IconButton(onPressed: () {}, icon: Icon(Icons.edit))
-          ],
+        leading: avatar,
+        title: Text(pacient.name),
+        trailing: Container(
+            width: 100,
+            child: Row(
+              children: <Widget>[
+                IconButton(onPressed: () {}, icon: Icon(Icons.edit))
+              ],
+            )
         )
-      )
     );
   }
 }
