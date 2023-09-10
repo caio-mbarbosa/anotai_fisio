@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "881555417774",
+    "project_id": "deep-hook-391301",
+    "storage_bucket": "deep-hook-391301.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:881555417774:android:07359838c87782ff0b5b3f",
+        "android_client_info": {
+          "package_name": "com.example.anotai_fisio"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "881555417774-ioni1jfr41q38kqn3cf6dmp34e8bvs4o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDQLkSIIWpuP0AcEJZYvFzqqmmRRJD5Vyw"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "881555417774-9emhm4i73nrbs4i0qujh44gsp44girvb.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
