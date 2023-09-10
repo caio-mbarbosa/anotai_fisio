@@ -6,12 +6,12 @@ const DUMMY_PACIENTS = {
     name: 'Julio',
     age: 21,
     sex: 'Masculino',
-    occupation: 'Estudante')
+    link_sheets: '1n10_axhKFBd_eEFxZjAB_3e7l1QV_1eJR7ONgBT-O9E')
     ,
   '1': const Pacient(
     id: '1',
-    name: 'Marilia',
+    name: 'Fulano da Silva',
     age: 22,
-    sex: 'Feminino',
-    occupation: 'Estudante')
+    sex: 'Masculino',
+    link_sheets: '1n10_axhKFBd_eEFxZjAB_3e7l1QV_1eJR7ONgBT-O9E')
 };

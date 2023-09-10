@@ -14,8 +14,7 @@ class Pacients with ChangeNotifier{
     return _items.length;
   }
 
-  Pacient byIndex(String idx){
-    final int i = int.parse(idx);
+  Pacient byIndex(int i){
     return _items.values.elementAt(i);
   }
 
@@ -27,7 +26,7 @@ class Pacients with ChangeNotifier{
           name: pacient.name,
           age: pacient.age,
           sex: pacient.sex,
-          occupation: pacient.occupation
+          link_sheets: pacient.link_sheets
       ));
     } else {
      // adicionar
@@ -38,7 +37,7 @@ class Pacients with ChangeNotifier{
         name: pacient.name,
         age: pacient.age,
         sex: pacient.sex,
-        occupation: pacient.occupation
+        link_sheets: pacient.link_sheets
     ));
     }
     notifyListeners();
@@ -49,5 +48,12 @@ class Pacients with ChangeNotifier{
       _items.remove(pacient.id);
       notifyListeners();
     }
+  }
+
+  Pacient? byId(String id){
+    if (_items.containsKey(id)){
+      return _items[id];
+    }
+    return null;
   }
 }

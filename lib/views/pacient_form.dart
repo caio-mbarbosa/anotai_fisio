@@ -29,20 +29,20 @@ class PacientForm extends StatelessWidget{
   PacientForm({required this.id});
 
   void _loadFormData(String id, BuildContext context){
-    if (id != ''){
-     final Pacient pacient = Provider.of<Pacients>(context, listen: false).byIndex(id);
-    _formData['id'] = pacient.id;
-    _formData['name'] = pacient.name;
-    _formData['age'] = pacient.age.toString();
-    _formData['sex'] = pacient.sex;
-    _formData['occupation'] = pacient.occupation;
+    if ( id != ''){
+     final Pacient? pacient = Provider.of<Pacients>(context, listen: false).byId(id);
+     if (pacient != null){
+       _formData['id'] = pacient.id;
+      _formData['name'] = pacient.name;
+      _formData['age'] = pacient.age.toString();
+      _formData['sex'] = pacient.sex;
+      _formData['link_sheets'] = pacient.link_sheets;
+     }
     }
   }
 
   @override
   Widget build(BuildContext context){
-    final String name = Provider.of<Pacients>(context, listen: false).byIndex(id).name;
-
     _loadFormData(id, context);
 
     return Scaffold(
@@ -63,7 +63,7 @@ class PacientForm extends StatelessWidget{
                name: _formData['name'].toString(),
                age: int.parse(_formData['age'].toString()),
                sex: _formData['sex'].toString(),
-               occupation: _formData['occupation'].toString()
+               link_sheets: _formData['link_sheets'].toString()
            ));
            Navigator.of(context).pop();
            print('dei put de um pacient');
@@ -116,8 +116,8 @@ class PacientForm extends StatelessWidget{
                 },
               ),
               TextFormField(
-                initialValue: _formData['occupation'],
-                decoration: InputDecoration(labelText: 'Ocupacao'),
+                initialValue: _formData['link_sheets'],
+                decoration: InputDecoration(labelText: 'Link Google Sheets'),
                 validator: (value) {
                   if (value == null || value.isEmpty){
                     return 'Nome invalido';
@@ -125,9 +125,9 @@ class PacientForm extends StatelessWidget{
                   return null;
                 },
                 onSaved: (value) {
-                  _formData['occupation'] = value.toString();
-                },
-              )
+                  _formData['link_sheets'] = value.toString();
+                }
+              ),
             ],
           )
         ),

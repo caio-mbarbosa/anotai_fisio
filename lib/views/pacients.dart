@@ -34,7 +34,7 @@ class PacientsList extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: pacients.count,
-          itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i.toString())),
+          itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -62,18 +62,18 @@ class PacientTile extends StatelessWidget{
       leading: avatar,
       title: Text(pacient.name),
       trailing: Container(
-        width: 100,
-        child: Row(
-          children: <Widget>[
-            IconButton(icon: Icon(Icons.edit),
+        width: 30,
+        child: Align(
+          alignment: Alignment.centerRight,
+          child: IconButton(icon: Icon(Icons.edit),
             onPressed: () {
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id)),
-              );
+            Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id))
+            );
             })
-          ],
         )
-    ));
+        )
+    );
   }
 }

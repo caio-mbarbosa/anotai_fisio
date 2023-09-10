@@ -5,7 +5,7 @@ class Pacient{
     final String name;
     final int age;
     final String sex;
-    final String occupation;
+    final String link_sheets;
     // final String religiao;
     // final String estado_civil;
     // final String residencia;
@@ -16,6 +16,6 @@ class Pacient{
       required this.name,
       required this.age,
       required this.sex,
-      required this.occupation,
+      required this.link_sheets,
     });
 }
