@@ -1,18 +1,25 @@
 import 'dart:async';
-
 import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
 import 'package:anotai_fisio/views/customize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:record/record.dart';
-
+import 'package:anotai_fisio/provider/pacients_provider.dart';
 import 'package:anotai_fisio/audio_player.dart';
 import 'record.dart';
 import 'home.dart';
 
 void main() {
-  runApp(MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false));
+  runApp(
+      MultiProvider(
+          providers: [
+            ChangeNotifierProvider(create: (_) => Pacients()),
+          ],
+        child: MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false),
+      ),
+  );
 }
 
 class MyApp extends StatelessWidget {
@@ -84,7 +91,7 @@ class MyApp extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => PacientsListProvider()),
+                  MaterialPageRoute(builder: (context) => PacientsList()),
                 );
               },
             ),

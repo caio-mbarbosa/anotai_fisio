@@ -7,15 +7,15 @@ import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 
-class PacientsListProvider extends StatelessWidget{
-  @override
-  Widget build(BuildContext context){
-    return ChangeNotifierProvider(
-      create: (ctx) => Pacients(),
-      child: PacientsList(),
-    );
-  }
-}
+// class PacientsListProvider extends StatelessWidget{
+//   @override
+//   Widget build(BuildContext context){
+//     return ChangeNotifierProvider(
+//       create: (ctx) => Pacients(),
+//       child: PacientsList(),
+//     );
+//   }
+// }
 
 
 class PacientsList extends StatelessWidget {
@@ -34,18 +34,15 @@ class PacientsList extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: pacients.count,
-          itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
+          itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i.toString())),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
         onPressed: () {
-          pacients.put(Pacient(
-              id: '',
-              name: 'Fulano',
-              age: 30,
-              sex: 'Masculino',
-              occupation: 'Professor'
-          ));
+          Navigator.push(
+            context,
+            MaterialPageRoute(builder: (context) => PacientForm(id: '')),
+          );
         },
         backgroundColor: Colors.deepPurple,
       ),
@@ -72,11 +69,11 @@ class PacientTile extends StatelessWidget{
             onPressed: () {
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => PacientForm(id: '100')),
+                MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id)),
               );
             })
           ],
         )
-    );
+    ));
   }
 }

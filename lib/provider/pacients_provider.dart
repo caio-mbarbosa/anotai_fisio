@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,8 @@ class Pacients with ChangeNotifier{
     return _items.length;
   }
 
-  Pacient byIndex(int i){
+  Pacient byIndex(String idx){
+    final int i = int.parse(idx);
     return _items.values.elementAt(i);
   }
 
@@ -31,6 +31,7 @@ class Pacients with ChangeNotifier{
       ));
     } else {
      // adicionar
+      print('vou add');
     final id = Random().nextDouble().toString();
     _items.putIfAbsent(id, () => Pacient(
         id: id,
