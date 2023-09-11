@@ -4,6 +4,7 @@ import 'package:anotai_fisio/models/pacient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
+import 'package:avatar_glow/avatar_glow.dart';
 
 import 'package:anotai_fisio/audio_player.dart';
 import 'transcribe.dart';
@@ -88,29 +89,26 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      home: Scaffold(
-        body: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: <Widget>[
-                _buildRecordStopControl(),
-                const SizedBox(width: 20),
-                _buildPauseResumeControl(),
-                const SizedBox(width: 20),
-                _buildText(),
-              ],
-            ),
-            if (_amplitude != null) ...[
-              const SizedBox(height: 40),
-              Text('Current: ${_amplitude?.current ?? 0.0}'),
-              Text('Max: ${_amplitude?.max ?? 0.0}'),
-            ],
-          ],
-        ),
-      ),
+    return Column(
+      mainAxisAlignment: MainAxisAlignment.center,
+      children: [
+        if (_recordState != RecordState.stop) ...[
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.close, color: Color(0xFF000000))),
+          _buildTimer()
+        ],
+        _buildStartControl(),
+        if (_recordState == RecordState.stop) ...[
+          const Text("Clique para gravar")
+        ],
+        if (_recordState != RecordState.stop) ...[
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            _buildPauseResumeControl(),
+            _buildRecordStopControl()
+          ]),
+        ],
+      ],
     );
   }
 
@@ -130,10 +128,6 @@ class _AudioRecorderState extends State<AudioRecorder> {
     if (_recordState != RecordState.stop) {
       icon = const Icon(Icons.stop, color: Colors.red, size: 30);
       color = Colors.red.withOpacity(0.1);
-    } else {
-      final theme = Theme.of(context);
-      icon = Icon(Icons.mic, color: theme.primaryColor, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
     }
 
     return ClipOval(
@@ -147,6 +141,38 @@ class _AudioRecorderState extends State<AudioRecorder> {
         ),
       ),
     );
+  }
+
+  Widget _buildStartControl() {
+    late Icon icon;
+    late Color color;
+
+    if (_recordState != RecordState.stop) {
+      icon = const Icon(Icons.stop, color: Colors.red, size: 45);
+      color = Colors.red.withOpacity(0.1);
+    } else {
+      final theme = Theme.of(context);
+      icon = Icon(Icons.mic, color: Color(0xFFFFFFFF), size: 45);
+      color = Color(0xff552a7f);
+    }
+
+    return AvatarGlow(
+        endRadius: 100.0,
+        child: Material(
+          // Replace this child with your own
+          elevation: 8.0,
+          shape: const CircleBorder(),
+          child: CircleAvatar(
+            backgroundColor: color,
+            radius: 60.0,
+            child: InkWell(
+              child: SizedBox(child: icon),
+              onTap: () {
+                (_recordState != RecordState.stop) ? _stop() : _start();
+              },
+            ),
+          ),
+        ));
   }
 
   Widget _buildPauseResumeControl() {
@@ -179,21 +205,13 @@ class _AudioRecorderState extends State<AudioRecorder> {
     );
   }
 
-  Widget _buildText() {
-    if (_recordState != RecordState.stop) {
-      return _buildTimer();
-    }
-
-    return const Text("Waiting to record");
-  }
-
   Widget _buildTimer() {
     final String minutes = _formatNumber(_recordDuration ~/ 60);
     final String seconds = _formatNumber(_recordDuration % 60);
 
     return Text(
       '$minutes : $seconds',
-      style: const TextStyle(color: Colors.red),
+      style: const TextStyle(color: Color(0xFF000000)),
     );
   }
 
@@ -218,10 +236,12 @@ class _AudioRecorderState extends State<AudioRecorder> {
 class Recording extends StatefulWidget {
   final List<String> campos;
   final Pacient pacient;
-  const Recording({Key? key, required this.campos, required this.pacient}) : super(key: key);
+  const Recording({Key? key, required this.campos, required this.pacient})
+      : super(key: key);
 
   @override
-  State<Recording> createState() => _RecordingState(campos: campos, pacient: pacient);
+  State<Recording> createState() =>
+      _RecordingState(campos: campos, pacient: pacient);
 }
 
 class _RecordingState extends State<Recording> {
@@ -240,28 +260,43 @@ class _RecordingState extends State<Recording> {
 
   @override
   Widget build(BuildContext context) {
+    double fem = .9;
+    double ffem = 1;
+    double svgSize = 300;
+    double screenPadding = 50;
+    double rowGap = 20;
     return MaterialApp(
       home: Scaffold(
-        body: Center(
+        body: Container(
+          padding: EdgeInsets.fromLTRB(
+              screenPadding * fem,
+              3 * screenPadding * fem,
+              screenPadding * fem,
+              screenPadding * fem),
+          width: double.infinity,
+          decoration: BoxDecoration(
+            color: Color(0xFF9175AC),
+          ),
           child: showPlayer
               ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-            AudioPlayer(
-              source: audioPath!,
-              onDelete: () {
-                setState(() => showPlayer = false);
-              },
-            ),
-            Transcribe(audioPath: audioPath!, campos: campos, pacient: pacient)
-          ])
+                  AudioPlayer(
+                    source: audioPath!,
+                    onDelete: () {
+                      setState(() => showPlayer = false);
+                    },
+                  ),
+                  Transcribe(
+                      audioPath: audioPath!, campos: campos, pacient: pacient)
+                ])
               : AudioRecorder(
-            onStop: (path) {
-              if (kDebugMode) print('Recorded file path: $path');
-              setState(() {
-                audioPath = path;
-                showPlayer = true;
-              });
-            },
-          ),
+                  onStop: (path) {
+                    if (kDebugMode) print('Recorded file path: $path');
+                    setState(() {
+                      audioPath = path;
+                      showPlayer = true;
+                    });
+                  },
+                ),
         ),
       ),
     );

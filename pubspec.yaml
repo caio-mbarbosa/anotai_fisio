@@ -40,6 +40,7 @@ dependencies:
   flutter_svg: ^2.0.7
   shared_preferences: ^2.0.10
   provider: any
+  avatar_glow: ^2.0.2
 
 
   # The following adds the Cupertino Icons font to your application.
