@@ -1,16 +1,25 @@
 import 'dart:ffi';
+import 'package:anotai_fisio/models/pacient.dart';
+import 'package:anotai_fisio/record.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:anotai_fisio/models/prontuario.dart';
+import 'package:anotai_fisio/transcribe.dart';
 import 'dart:convert';
 
 class CustomizeView extends StatefulWidget {
+  final Pacient pacient;
+
   @override
-  _ModelosScreenState createState() => _ModelosScreenState();
+  _ModelosScreenState createState() => _ModelosScreenState(pacient: pacient);
+
+  CustomizeView({required this.pacient});
 }
 
 class _ModelosScreenState extends State<CustomizeView> {
   List<Modelo> modelos = [];
+  final Pacient pacient;
+  _ModelosScreenState({required this.pacient});
 
   @override
   void initState() {
@@ -76,7 +85,7 @@ class _ModelosScreenState extends State<CustomizeView> {
                 Navigator.push(
                   context,
                   MaterialPageRoute(
-                    builder: (context) => EditScreen(modelo: modelos[index]),
+                    builder: (context) => EditScreen(pacient: pacient, modelo: modelos[index]),
                   ),
                 );
               },
@@ -113,16 +122,19 @@ class _ModelosScreenState extends State<CustomizeView> {
 
 class EditScreen extends StatefulWidget {
   final Modelo modelo;
+  final Pacient pacient;
 
-  EditScreen({required this.modelo});
+  EditScreen({required this.pacient, required this.modelo});
 
   @override
-  _EditScreenState createState() => _EditScreenState();
+  _EditScreenState createState() => _EditScreenState(pacient: pacient);
 }
 
 class _EditScreenState extends State<EditScreen> {
   List<String> campos = [];
   int campoCount = 0;
+  final Pacient pacient;
+  _EditScreenState({required this.pacient});
 
   @override
   void initState() {
@@ -202,6 +214,25 @@ class _EditScreenState extends State<EditScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                IconButton(
+                  icon: Icon(Icons.check_box),
+                  color: Color(0xff764abc),
+                  onPressed: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Recording(pacient: this.pacient, campos: this.campos),
+                      ),
+                    ).then((novoCampo) {
+                      if (novoCampo != null) {
+                        setState(() {
+                          campoCount++;
+                          campos.add(novoCampo);
+                        });
+                      }
+                    });
+                  },
+                ),
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {

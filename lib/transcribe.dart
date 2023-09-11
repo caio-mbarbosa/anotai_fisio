@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:anotai_fisio/models/pacient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'constant.dart';
@@ -10,18 +11,26 @@ import 'package:dart_openai/dart_openai.dart';
 
 class Transcribe extends StatefulWidget {
   final String? audioPath;
+  final Pacient pacient;
+  final List<String> campos;
 
   const Transcribe({
     Key? key,
     required this.audioPath,
+    required this.campos,
+    required this.pacient
   }) : super(key: key);
 
   @override
-  State<Transcribe> createState() => _TranscribeState();
+  State<Transcribe> createState() => _TranscribeState(campos: campos, pacient: pacient);
 }
 
 class _TranscribeState extends State<Transcribe> {
   String? text;
+  final Pacient pacient;
+  final List<String> campos;
+  
+  _TranscribeState({required this.campos, required this.pacient});
 
   @override
   void initState() {
@@ -45,10 +54,17 @@ class _TranscribeState extends State<Transcribe> {
   Future<void> main_service(String texto) async {
     print("comecando gpt...");
     final gsheets = GSheets(credentials);
-    final ss = await gsheets.spreadsheet(spreadsheetId);
+    //final ss = await gsheets.spreadsheet(spreadsheetId);
+    final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
     var sheet = ss.worksheetByTitle('Teste');
-
-    final campos = await sheet?.values.row(1);
+    print("Debugging info:");
+    print(this.pacient.name);
+    print(this.campos);
+    print(this.pacient.link_sheets);
+    print("end");
+    final campos = this.campos;
+    await sheet?.values.insertRow(1, campos);
+    //final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
     Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:

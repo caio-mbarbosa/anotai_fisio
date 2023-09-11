@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'package:anotai_fisio/models/pacient.dart';
 import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
 import 'package:anotai_fisio/views/customize.dart';
@@ -8,17 +9,18 @@ import 'package:provider/provider.dart';
 import 'package:record/record.dart';
 import 'package:anotai_fisio/provider/pacients_provider.dart';
 import 'package:anotai_fisio/audio_player.dart';
+import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'record.dart';
 import 'home.dart';
 
 void main() {
   runApp(
-      MultiProvider(
-          providers: [
-            ChangeNotifierProvider(create: (_) => Pacients()),
-          ],
-        child: MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false),
-      ),
+    MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => Pacients()),
+      ],
+      child: MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false),
+    ),
   );
 }
 
@@ -55,7 +57,7 @@ class MyApp extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => const Recording()),
+                  MaterialPageRoute(builder: (context) => const Recording(campos: ['asdas'], pacient: Pacient(id: '100', name: 'TesteDummy', age: 11, sex: 'M', link_sheets: 'abc'))),
                 );
               },
             ),
@@ -103,7 +105,7 @@ class MyApp extends StatelessWidget {
               onTap: () {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => CustomizeView()),
+                  MaterialPageRoute(builder: (context) => CustomizeView(pacient: Pacient(id: '100', name: 'TesteDummy', age: 11, sex: 'M', link_sheets: 'abc'))),
                 );
               },
             ),

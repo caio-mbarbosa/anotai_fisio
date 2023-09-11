@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:anotai_fisio/models/pacient.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
@@ -215,15 +216,21 @@ class _AudioRecorderState extends State<AudioRecorder> {
 }
 
 class Recording extends StatefulWidget {
-  const Recording({Key? key}) : super(key: key);
+  final List<String> campos;
+  final Pacient pacient;
+  const Recording({Key? key, required this.campos, required this.pacient}) : super(key: key);
 
   @override
-  State<Recording> createState() => _RecordingState();
+  State<Recording> createState() => _RecordingState(campos: campos, pacient: pacient);
 }
 
 class _RecordingState extends State<Recording> {
   bool showPlayer = false;
   String? audioPath;
+  final List<String> campos;
+  final Pacient pacient;
+
+  _RecordingState({required this.campos, required this.pacient});
 
   @override
   void initState() {
@@ -244,7 +251,7 @@ class _RecordingState extends State<Recording> {
                 setState(() => showPlayer = false);
               },
             ),
-            Transcribe(audioPath: audioPath!)
+            Transcribe(audioPath: audioPath!, campos: campos, pacient: pacient)
           ])
               : AudioRecorder(
             onStop: (path) {

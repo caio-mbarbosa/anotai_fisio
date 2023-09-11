@@ -30,14 +30,14 @@ class PacientForm extends StatelessWidget{
 
   void _loadFormData(String id, BuildContext context){
     if ( id != ''){
-     final Pacient? pacient = Provider.of<Pacients>(context, listen: false).byId(id);
-     if (pacient != null){
-       _formData['id'] = pacient.id;
-      _formData['name'] = pacient.name;
-      _formData['age'] = pacient.age.toString();
-      _formData['sex'] = pacient.sex;
-      _formData['link_sheets'] = pacient.link_sheets;
-     }
+      final Pacient? pacient = Provider.of<Pacients>(context, listen: false).byId(id);
+      if (pacient != null){
+        _formData['id'] = pacient.id;
+        _formData['name'] = pacient.name;
+        _formData['age'] = pacient.age.toString();
+        _formData['sex'] = pacient.sex;
+        _formData['link_sheets'] = pacient.link_sheets;
+      }
     }
   }
 
@@ -57,79 +57,79 @@ class PacientForm extends StatelessWidget{
           final isValid = _form.currentState?.validate();
 
           if (isValid == true){
-           _form.currentState?.save();
-           Provider.of<Pacients>(context, listen: false).put(Pacient(
-               id: _formData['id'].toString(),
-               name: _formData['name'].toString(),
-               age: int.parse(_formData['age'].toString()),
-               sex: _formData['sex'].toString(),
-               link_sheets: _formData['link_sheets'].toString()
-           ));
-           Navigator.of(context).pop();
-           print('dei put de um pacient');
+            _form.currentState?.save();
+            Provider.of<Pacients>(context, listen: false).put(Pacient(
+                id: _formData['id'].toString(),
+                name: _formData['name'].toString(),
+                age: int.parse(_formData['age'].toString()),
+                sex: _formData['sex'].toString(),
+                link_sheets: _formData['link_sheets'].toString()
+            ));
+            Navigator.of(context).pop();
+            print('dei put de um pacient');
           }
         },
       ),
       body: Padding(
         padding: EdgeInsets.all(15),
         child: Form(
-          key: _form,
-          child: Column(
-            children: <Widget>[
-              TextFormField(
-                initialValue: _formData['name'],
-                decoration: InputDecoration(labelText: 'Nome'),
-                validator: (value) {
-                  if (value == null || value.isEmpty){
-                    return 'Nome invalido';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _formData['name'] = value.toString();
-                },
-              ),
-              TextFormField(
-                initialValue: _formData['age'],
-                decoration: InputDecoration(labelText: 'Idade'),
-                validator: (value) {
-                  if (value == null || value.isEmpty){
-                    return 'Nome invalido';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _formData['age'] = value.toString();
-                },
-              ),
-              TextFormField(
-                initialValue: _formData['sex'],
-                decoration: InputDecoration(labelText: 'Sexo'),
-                validator: (value) {
-                  if (value == null || value.isEmpty){
-                    return 'Nome invalido';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _formData['sex'] = value.toString();
-                },
-              ),
-              TextFormField(
-                initialValue: _formData['link_sheets'],
-                decoration: InputDecoration(labelText: 'Link Google Sheets'),
-                validator: (value) {
-                  if (value == null || value.isEmpty){
-                    return 'Nome invalido';
-                  }
-                  return null;
-                },
-                onSaved: (value) {
-                  _formData['link_sheets'] = value.toString();
-                }
-              ),
-            ],
-          )
+            key: _form,
+            child: Column(
+              children: <Widget>[
+                TextFormField(
+                  initialValue: _formData['name'],
+                  decoration: InputDecoration(labelText: 'Nome'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Nome invalido';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _formData['name'] = value.toString();
+                  },
+                ),
+                TextFormField(
+                  initialValue: _formData['age'],
+                  decoration: InputDecoration(labelText: 'Idade'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Nome invalido';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _formData['age'] = value.toString();
+                  },
+                ),
+                TextFormField(
+                  initialValue: _formData['sex'],
+                  decoration: InputDecoration(labelText: 'Sexo'),
+                  validator: (value) {
+                    if (value == null || value.isEmpty){
+                      return 'Nome invalido';
+                    }
+                    return null;
+                  },
+                  onSaved: (value) {
+                    _formData['sex'] = value.toString();
+                  },
+                ),
+                TextFormField(
+                    initialValue: _formData['link_sheets'],
+                    decoration: InputDecoration(labelText: 'Link Google Sheets'),
+                    validator: (value) {
+                      if (value == null || value.isEmpty){
+                        return 'Nome invalido';
+                      }
+                      return null;
+                    },
+                    onSaved: (value) {
+                      _formData['link_sheets'] = value.toString();
+                    }
+                ),
+              ],
+            )
         ),
       ),
     );

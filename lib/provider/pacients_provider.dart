@@ -29,16 +29,16 @@ class Pacients with ChangeNotifier{
           link_sheets: pacient.link_sheets
       ));
     } else {
-     // adicionar
+      // adicionar
       print('vou add');
-    final id = Random().nextDouble().toString();
-    _items.putIfAbsent(id, () => Pacient(
-        id: id,
-        name: pacient.name,
-        age: pacient.age,
-        sex: pacient.sex,
-        link_sheets: pacient.link_sheets
-    ));
+      final id = Random().nextDouble().toString();
+      _items.putIfAbsent(id, () => Pacient(
+          id: id,
+          name: pacient.name,
+          age: pacient.age,
+          sex: pacient.sex,
+          link_sheets: pacient.link_sheets
+      ));
     }
     notifyListeners();
   }

@@ -6,6 +6,7 @@ import 'package:anotai_fisio/views/pacient_form.dart';
 import 'package:flutter/material.dart';
 import 'package:path/path.dart';
 import 'package:provider/provider.dart';
+import 'package:anotai_fisio/views/customize.dart';
 
 // class PacientsListProvider extends StatelessWidget{
 //   @override
@@ -34,7 +35,7 @@ class PacientsList extends StatelessWidget {
       ),
       body: ListView.builder(
         itemCount: pacients.count,
-          itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
+        itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.add),
@@ -58,22 +59,49 @@ class PacientTile extends StatelessWidget{
   @override
   Widget build(BuildContext context){
     final avatar = CircleAvatar(child: Icon(Icons.person, color: Colors.white70,), backgroundColor: Colors.deepPurple,);
-    return ListTile(
-      leading: avatar,
-      title: Text(pacient.name),
-      trailing: Container(
-        width: 30,
-        child: Align(
-          alignment: Alignment.centerRight,
-          child: IconButton(icon: Icon(Icons.edit),
-            onPressed: () {
-            Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id))
-            );
-            })
-        )
-        )
+    return InkWell(
+      onTap: () {
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => CustomizeView(pacient: pacient)),
+        );
+      },
+      child: ListTile(
+        leading: avatar,
+        title: Text(pacient.name),
+        trailing: Container(
+          width: 30,
+          child: Align(
+            alignment: Alignment.centerRight,
+            child: IconButton(
+              icon: Icon(Icons.edit),
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id)),
+                );
+              },
+            ),
+          ),
+        ),
+      ),
     );
+    // return ListTile(
+    //     leading: avatar,
+    //     title: Text(pacient.name),
+    //     trailing: Container(
+    //         width: 30,
+    //         child: Align(
+    //             alignment: Alignment.centerRight,
+    //             child: IconButton(icon: Icon(Icons.edit),
+    //                 onPressed: () {
+    //                   Navigator.push(
+    //                       context,
+    //                       MaterialPageRoute(builder: (context) => PacientForm(id: pacient.id))
+    //                   );
+    //                 })
+    //         )
+    //     )
+    // );
   }
 }
