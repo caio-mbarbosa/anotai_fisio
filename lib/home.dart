@@ -114,7 +114,7 @@ class Home extends StatelessWidget {
                     width: 150 * fem,
                     height: 26 * fem,
                     child: ElevatedButton(
-                      onPressed: () {},
+                      onPressed: null,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
                         backgroundColor: Color.fromRGBO(247, 242, 250, 1),
@@ -150,11 +150,11 @@ class Home extends StatelessWidget {
                         height: 48 * fem,
                         decoration: ShapeDecoration(
                             shape: CircleBorder(eccentricity: 1),
-                            color: Color.fromRGBO(247, 242, 250, 1)),
+                            color: Color.fromRGBO(247, 242, 250, .5)),
                         child: IconButton.filled(
                             icon: const Icon(Icons.question_mark),
                             color: Color(0xff552a7f),
-                            onPressed: () => {}))),
+                            onPressed: null))),
               ),
             ],
           )),

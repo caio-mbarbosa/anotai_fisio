@@ -5,6 +5,8 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'package:avatar_glow/avatar_glow.dart';
+import 'package:audio_wave/audio_wave.dart';
+import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 import 'package:anotai_fisio/audio_player.dart';
 import 'transcribe.dart';
@@ -89,22 +91,31 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   @override
   Widget build(BuildContext context) {
+    double columnGap = 100;
+    double fem = .9;
+    double rowGap = 50;
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: [
         if (_recordState != RecordState.stop) ...[
-          IconButton(
-              onPressed: () {},
-              icon: Icon(Icons.close, color: Color(0xFF000000))),
+          // Ainda não consegui implementar funcionalidade
+          // IconButton(
+          //     onPressed: () {},
+          //     icon: Icon(Icons.close, color: Color(0xFF000000))),
           _buildTimer()
         ],
-        _buildStartControl(),
+        Container(
+          margin: EdgeInsets.fromLTRB(
+              rowGap * fem, rowGap * fem, rowGap * fem, rowGap * fem),
+          child: _buildStartControl(),
+        ),
         if (_recordState == RecordState.stop) ...[
           const Text("Clique para gravar")
         ],
         if (_recordState != RecordState.stop) ...[
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             _buildPauseResumeControl(),
+            SizedBox(width: columnGap),
             _buildRecordStopControl()
           ]),
         ],
@@ -126,8 +137,8 @@ class _AudioRecorderState extends State<AudioRecorder> {
     late Color color;
 
     if (_recordState != RecordState.stop) {
-      icon = const Icon(Icons.stop, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
+      icon = const Icon(Icons.stop, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -144,14 +155,46 @@ class _AudioRecorderState extends State<AudioRecorder> {
   }
 
   Widget _buildStartControl() {
-    late Icon icon;
+    late Widget icon;
     late Color color;
 
     if (_recordState != RecordState.stop) {
-      icon = const Icon(Icons.stop, color: Colors.red, size: 45);
-      color = Colors.red.withOpacity(0.1);
+      double amp = 1;
+      if (_amplitude != null) {
+        amp = numerics.sin(_amplitude!.current);
+        amp.abs();
+      }
+      try {
+        icon = AudioWave(
+          height: 32,
+          width: 32,
+          spacing: 2.5,
+          animation: false,
+          bars: [
+            AudioWaveBar(heightFactor: .5 * amp, color: Colors.white),
+            AudioWaveBar(heightFactor: .8 * amp, color: Colors.white),
+            AudioWaveBar(heightFactor: amp, color: Colors.white),
+            AudioWaveBar(heightFactor: .8 * amp, color: Colors.white),
+            AudioWaveBar(heightFactor: .5 * amp, color: Colors.white),
+          ],
+        );
+      } catch (exeption) {
+        icon = AudioWave(
+          height: 32,
+          width: 32,
+          spacing: 2.5,
+          animation: false,
+          bars: [
+            AudioWaveBar(heightFactor: .5 * 1, color: Colors.white),
+            AudioWaveBar(heightFactor: .8 * 1, color: Colors.white),
+            AudioWaveBar(heightFactor: 1, color: Colors.white),
+            AudioWaveBar(heightFactor: .8 * 1, color: Colors.white),
+            AudioWaveBar(heightFactor: .5 * 1, color: Colors.white),
+          ],
+        );
+      }
+      color = Color(0xff552a7f);
     } else {
-      final theme = Theme.of(context);
       icon = Icon(Icons.mic, color: Color(0xFFFFFFFF), size: 45);
       color = Color(0xff552a7f);
     }
@@ -168,7 +211,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
             child: InkWell(
               child: SizedBox(child: icon),
               onTap: () {
-                (_recordState != RecordState.stop) ? _stop() : _start();
+                (_recordState != RecordState.stop) ? null : _start();
               },
             ),
           ),
@@ -184,12 +227,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
     late Color color;
 
     if (_recordState == RecordState.record) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
+      icon = const Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     } else {
-      final theme = Theme.of(context);
-      icon = const Icon(Icons.play_arrow, color: Colors.red, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
+      icon = const Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -211,7 +253,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
     return Text(
       '$minutes : $seconds',
-      style: const TextStyle(color: Color(0xFF000000)),
+      style: const TextStyle(color: Color(0xFF000000), fontSize: 20),
     );
   }
 
@@ -261,10 +303,8 @@ class _RecordingState extends State<Recording> {
   @override
   Widget build(BuildContext context) {
     double fem = .9;
-    double ffem = 1;
-    double svgSize = 300;
     double screenPadding = 50;
-    double rowGap = 20;
+    double rowGap = 2;
     return MaterialApp(
       home: Scaffold(
         body: Container(
@@ -278,16 +318,23 @@ class _RecordingState extends State<Recording> {
             color: Color(0xFF9175AC),
           ),
           child: showPlayer
-              ? Column(mainAxisAlignment: MainAxisAlignment.center, children: [
-                  AudioPlayer(
-                    source: audioPath!,
-                    onDelete: () {
-                      setState(() => showPlayer = false);
-                    },
-                  ),
-                  Transcribe(
-                      audioPath: audioPath!, campos: campos, pacient: pacient)
-                ])
+              ? Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      AudioPlayer(
+                        source: audioPath!,
+                        onDelete: () {
+                          setState(() => showPlayer = false);
+                        },
+                      ),
+                      Transcribe(
+                          audioPath: audioPath!,
+                          campos: campos,
+                          pacient: pacient),
+                      SizedBox(height: rowGap),
+                    ])
               : AudioRecorder(
                   onStop: (path) {
                     if (kDebugMode) print('Recorded file path: $path');

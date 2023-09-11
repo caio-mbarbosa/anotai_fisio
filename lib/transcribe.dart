@@ -2,9 +2,11 @@ import 'dart:async';
 import 'dart:convert';
 
 import 'package:anotai_fisio/models/pacient.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'constant.dart';
+import 'end.dart';
 import 'package:http/http.dart' as http;
 import 'package:gsheets/gsheets.dart';
 import 'package:dart_openai/dart_openai.dart';
@@ -14,22 +16,23 @@ class Transcribe extends StatefulWidget {
   final Pacient pacient;
   final List<String> campos;
 
-  const Transcribe({
-    Key? key,
-    required this.audioPath,
-    required this.campos,
-    required this.pacient
-  }) : super(key: key);
+  const Transcribe(
+      {Key? key,
+      required this.audioPath,
+      required this.campos,
+      required this.pacient})
+      : super(key: key);
 
   @override
-  State<Transcribe> createState() => _TranscribeState(campos: campos, pacient: pacient);
+  State<Transcribe> createState() =>
+      _TranscribeState(campos: campos, pacient: pacient);
 }
 
 class _TranscribeState extends State<Transcribe> {
   String? text;
   final Pacient pacient;
   final List<String> campos;
-  
+
   _TranscribeState({required this.campos, required this.pacient});
 
   @override
@@ -73,7 +76,7 @@ class _TranscribeState extends State<Transcribe> {
     ''';
 
     OpenAIChatCompletionModel chatCompletion =
-    await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
+        await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
       OpenAIChatCompletionChoiceMessageModel(
         content: prompt,
         role: OpenAIChatMessageRole.user,
@@ -81,19 +84,22 @@ class _TranscribeState extends State<Transcribe> {
     ]);
 
     print(chatCompletion.choices.first.message.content);
-    var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
+    var resultadoGpt =
+        json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
-    if(resultadoGpt != null){
+    if (resultadoGpt != null) {
       await sheet?.values.map.appendRow(resultadoGpt);
     }
     print('Dados inseridos com sucesso na planilha.');
-
   }
 
   @override
   Widget build(BuildContext context) {
+    double fem = .9;
+    double ffem = 1;
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
+          width: 200,
           child: ElevatedButton(
             onPressed: () async {
               print("Apertou");
@@ -105,12 +111,34 @@ class _TranscribeState extends State<Transcribe> {
                   setState(() {
                     text = value;
                     print(text);
-                    if(text != null) main_service(text!);
+                    if (text != null) main_service(text!);
                   });
                 });
               }
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                    builder: (context) =>
+                        End(pacient_link_sheets: widget.pacient.link_sheets)),
+              );
             },
-            child: Text(" Submeter Áudio "),
+            style: ElevatedButton.styleFrom(
+              padding: EdgeInsets.zero,
+              backgroundColor: Color(0xff552a7f),
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(100 * fem)),
+            ),
+            child: Text(
+              'Submeter Áudio',
+              textAlign: TextAlign.center,
+              style: GoogleFonts.roboto(
+                fontSize: 14 * ffem,
+                fontWeight: FontWeight.w500,
+                height: 1.4285714286 * ffem / fem,
+                letterSpacing: 0.1000000015 * fem,
+                color: Color.fromRGBO(247, 242, 250, 1),
+              ),
+            ),
           ));
     });
   }

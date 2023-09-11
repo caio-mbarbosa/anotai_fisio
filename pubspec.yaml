@@ -41,6 +41,9 @@ dependencies:
   shared_preferences: ^2.0.10
   provider: any
   avatar_glow: ^2.0.2
+  audio_wave: ^0.1.5
+  dart_numerics: ^0.0.6
+  url_launcher: ^6.1.14
 
 
   # The following adds the Cupertino Icons font to your application.

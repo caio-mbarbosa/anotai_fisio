@@ -75,7 +75,7 @@ class AudioPlayerState extends State<AudioPlayer> {
             _buildSlider(constraints.maxWidth),
             IconButton(
               icon: const Icon(Icons.delete,
-                  color: Color(0xFF73748D), size: _deleteBtnSize),
+                  color: Color(0x80552a7f), size: _deleteBtnSize),
               onPressed: () {
                 stop().then((value) => widget.onDelete());
               },
@@ -91,12 +91,11 @@ class AudioPlayerState extends State<AudioPlayer> {
     Color color;
 
     if (_audioPlayer.state == ap.PlayerState.playing) {
-      icon = const Icon(Icons.pause, color: Colors.red, size: 30);
-      color = Colors.red.withOpacity(0.1);
+      icon = const Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     } else {
-      final theme = Theme.of(context);
-      icon = Icon(Icons.play_arrow, color: theme.primaryColor, size: 30);
-      color = theme.primaryColor.withOpacity(0.1);
+      icon = const Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -133,8 +132,8 @@ class AudioPlayerState extends State<AudioPlayer> {
     return SizedBox(
       width: width,
       child: Slider(
-        activeColor: Theme.of(context).primaryColor,
-        inactiveColor: Theme.of(context).colorScheme.secondary,
+        activeColor: Color(0xff552a7f),
+        inactiveColor: Color(0x50552a7f),
         onChanged: (v) {
           if (duration != null) {
             final position = v * duration.inMilliseconds;
