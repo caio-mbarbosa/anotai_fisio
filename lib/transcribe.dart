@@ -54,12 +54,17 @@ class _TranscribeState extends State<Transcribe> {
     return responseData['text'];
   }
 
-  Future<void> main_service(String texto) async {
+  Future<int> main_service(String texto) async {
+    int error = 0;
     print("comecando gpt...");
     final gsheets = GSheets(credentials);
     //final ss = await gsheets.spreadsheet(spreadsheetId);
     final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
     var sheet = ss.worksheetByTitle('Teste');
+    if (sheet == null){
+      error = 1;
+      return error;
+    }
     print("Debugging info:");
     print(this.pacient.name);
     print(this.campos);
@@ -82,15 +87,33 @@ class _TranscribeState extends State<Transcribe> {
         role: OpenAIChatMessageRole.user,
       )
     ]);
+    if (chatCompletion == null || chatCompletion.choices.isEmpty) {
+      error = 2;
+      return error;
+    }
 
     print(chatCompletion.choices.first.message.content);
+    DateTime data = DateTime.now();
     var resultadoGpt =
         json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
-    if (resultadoGpt != null) {
-      await sheet?.values.map.appendRow(resultadoGpt);
+    Map<String, dynamic> novoMapa = {
+      "data": data, // Substitua pela sua data real
+      ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
+    };
+    if(novoMapa != null){
+      await sheet?.values.map.appendRow(novoMapa);
+    }
+    var colunaDeDatas = await sheet?.values.column(0);
+    // Verifica se a data está presente na coluna de datas.
+    if (colunaDeDatas != null){
+      if (colunaDeDatas.contains(data) != true) {
+        error = 3;
+        return error;
+      }
     }
     print('Dados inseridos com sucesso na planilha.');
+    return error;
   }
 
   @override
@@ -111,7 +134,9 @@ class _TranscribeState extends State<Transcribe> {
                   setState(() {
                     text = value;
                     print(text);
-                    if (text != null) main_service(text!);
+                    if (text != null){
+                      int mensagem = main_service(text!);
+                    }
                   });
                 });
               }
