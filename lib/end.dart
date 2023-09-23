@@ -9,8 +9,13 @@ import 'package:url_launcher/url_launcher.dart';
 
 class End extends StatelessWidget {
   final String? pacient_link_sheets;
+  final String mensagemCode;
 
-  const End({Key? key, required this.pacient_link_sheets}) : super(key: key);
+  const End({Key? key, required this.pacient_link_sheets, required this.mensagemCode}) : super(key: key);
+
+  void updateText(){
+
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -81,7 +86,7 @@ class End extends StatelessWidget {
                         child: Align(
                           child: SizedBox(
                             child: Text(
-                              'A planilha preenchida pode ser acessada',
+                              mensagemCode,
                               style: GoogleFonts.roboto(
                                 fontSize: 20 * ffem,
                                 fontWeight: FontWeight.w400,

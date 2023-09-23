@@ -319,31 +319,31 @@ class _RecordingState extends State<Recording> {
           ),
           child: showPlayer
               ? Column(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                      SizedBox(height: rowGap),
-                      SizedBox(height: rowGap),
-                      AudioPlayer(
-                        source: audioPath!,
-                        onDelete: () {
-                          setState(() => showPlayer = false);
-                        },
-                      ),
-                      Transcribe(
-                          audioPath: audioPath!,
-                          campos: campos,
-                          pacient: pacient),
-                      SizedBox(height: rowGap),
-                    ])
-              : AudioRecorder(
-                  onStop: (path) {
-                    if (kDebugMode) print('Recorded file path: $path');
-                    setState(() {
-                      audioPath = path;
-                      showPlayer = true;
-                    });
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                SizedBox(height: rowGap),
+                SizedBox(height: rowGap),
+                AudioPlayer(
+                  source: audioPath!,
+                  onDelete: () {
+                    setState(() => showPlayer = false);
                   },
                 ),
+                Transcribe(
+                    audioPath: audioPath!,
+                    campos: campos,
+                    pacient: pacient),
+                SizedBox(height: rowGap),
+              ])
+              : AudioRecorder(
+            onStop: (path) {
+              if (kDebugMode) print('Recorded file path: $path');
+              setState(() {
+                audioPath = path;
+                showPlayer = true;
+              });
+            },
+          ),
         ),
       ),
     );

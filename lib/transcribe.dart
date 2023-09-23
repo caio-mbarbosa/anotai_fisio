@@ -18,22 +18,23 @@ class Transcribe extends StatefulWidget {
 
   const Transcribe(
       {Key? key,
-      required this.audioPath,
-      required this.campos,
-      required this.pacient})
+        required this.audioPath,
+        required this.campos,
+        required this.pacient})
       : super(key: key);
 
   @override
   State<Transcribe> createState() =>
-      _TranscribeState(campos: campos, pacient: pacient);
+      _TranscribeState(campos: campos, pacient: pacient, mensagemCode: 'A planilha preenchida pode ser acessada');
 }
 
 class _TranscribeState extends State<Transcribe> {
   String? text;
   final Pacient pacient;
   final List<String> campos;
+  String mensagemCode;
 
-  _TranscribeState({required this.campos, required this.pacient});
+  _TranscribeState({required this.campos, required this.pacient, required this.mensagemCode});
 
   @override
   void initState() {
@@ -81,7 +82,7 @@ class _TranscribeState extends State<Transcribe> {
     ''';
 
     OpenAIChatCompletionModel chatCompletion =
-        await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
+    await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
       OpenAIChatCompletionChoiceMessageModel(
         content: prompt,
         role: OpenAIChatMessageRole.user,
@@ -95,7 +96,7 @@ class _TranscribeState extends State<Transcribe> {
     print(chatCompletion.choices.first.message.content);
     DateTime data = DateTime.now();
     var resultadoGpt =
-        json.decode(chatCompletion.choices.first.message.content);
+    json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
     Map<String, dynamic> novoMapa = {
       "data": data, // Substitua pela sua data real
@@ -135,7 +136,35 @@ class _TranscribeState extends State<Transcribe> {
                     text = value;
                     print(text);
                     if (text != null){
-                      int mensagem = main_service(text!);
+                      // 0 - não erros
+                      // 1 - erro achando planilha
+                      // 2 - erro gpt
+                      // 3 - erro inserir planilha
+                      Future<int> mensagem = main_service(text!);
+                      mensagem.then((result) {
+                        print(result);
+                        if (result == 1) {
+                          // Handle error finding spreadsheet
+                          mensagemCode = 'Houve um erro ao acessar a planilha, verifique o link no perfil';
+                          print('código 1 de retorno');
+                        } else if (result == 2) {
+                          // Handle error with GPT
+                          mensagemCode = 'Houve um erro ao processar os dados, tente novamente';
+                          print('código 2 de retorno');
+                        } else if (result == 3) {
+                          // Handle error inserting spreadsheet
+                          mensagemCode = 'Houve um erro ao inserir os dados, tente novamente';
+                          print('código 3 de retorno');
+                        } else if (result == 0) {
+                          // No error
+                          mensagemCode = 'A planilha preenchida pode ser acessada';
+                          print('código 0 de retorno');
+                        }
+                        else {
+                          print("deu ruim!");
+                          print(mensagem);
+                        }
+                      });
                     }
                   });
                 });
@@ -144,7 +173,7 @@ class _TranscribeState extends State<Transcribe> {
                 context,
                 MaterialPageRoute(
                     builder: (context) =>
-                        End(pacient_link_sheets: widget.pacient.link_sheets)),
+                        End(pacient_link_sheets: widget.pacient.link_sheets, mensagemCode: mensagemCode)),
               );
             },
             style: ElevatedButton.styleFrom(

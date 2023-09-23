@@ -37,16 +37,16 @@ class AudioPlayerState extends State<AudioPlayer> {
   void initState() {
     _playerStateChangedSubscription =
         _audioPlayer.onPlayerComplete.listen((state) async {
-      await stop();
-      setState(() {});
-    });
+          await stop();
+          setState(() {});
+        });
     _positionChangedSubscription = _audioPlayer.onPositionChanged.listen(
-      (position) => setState(() {
+          (position) => setState(() {
         _position = position;
       }),
     );
     _durationChangedSubscription = _audioPlayer.onDurationChanged.listen(
-      (duration) => setState(() {
+          (duration) => setState(() {
         _duration = duration;
       }),
     );
@@ -103,7 +103,7 @@ class AudioPlayerState extends State<AudioPlayer> {
         color: color,
         child: InkWell(
           child:
-              SizedBox(width: _controlSize, height: _controlSize, child: icon),
+          SizedBox(width: _controlSize, height: _controlSize, child: icon),
           onTap: () {
             if (_audioPlayer.state == ap.PlayerState.playing) {
               pause();
