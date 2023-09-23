@@ -73,15 +73,16 @@ class _TranscribeState extends State<Transcribe> {
     print("end");
     var camposAntigos = await sheet?.values.row(1);
     final campos = this.campos;
+    var camposNovo;
     if (camposAntigos != null){
-      var camposNovo = List.from(camposAntigos)..addAll(campos);
+      camposNovo = List.from(camposAntigos)..addAll(campos);
       camposNovo = List.from(['Data'])..addAll(camposNovo);
       camposNovo = camposNovo.toSet().toList();
-      await sheet?.values.insertRow(1, camposNovo);
     }
     else{
-      await sheet?.values.insertRow(1, campos);
+      camposNovo = List.from(['Data'])..addAll(campos);
     }
+    await sheet?.values.insertRow(1, camposNovo);
 
     //final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
