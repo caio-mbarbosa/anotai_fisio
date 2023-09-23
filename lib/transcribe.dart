@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:loading_overlay/loading_overlay.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
@@ -25,7 +26,7 @@ class Transcribe extends StatefulWidget {
 
   @override
   State<Transcribe> createState() =>
-      _TranscribeState(campos: campos, pacient: pacient, mensagemCode: 'A planilha preenchida pode ser acessada');
+      _TranscribeState(campos: campos, pacient: pacient, mensagemCode: 'A planilha trollou');
 }
 
 class _TranscribeState extends State<Transcribe> {
@@ -60,17 +61,15 @@ class _TranscribeState extends State<Transcribe> {
     print("comecando gpt...");
     final gsheets = GSheets(credentials);
     //final ss = await gsheets.spreadsheet(spreadsheetId);
-    final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
-    var sheet = ss.worksheetByTitle('Teste');
-    if (sheet == null){
+    var sheet = null;
+    try{
+      final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
+      sheet = ss.worksheetByTitle('Teste');
+    }
+    on Exception catch(_){
       error = 1;
       return error;
     }
-    print("Debugging info:");
-    print(this.pacient.name);
-    print(this.campos);
-    print(this.pacient.link_sheets);
-    print("end");
     var camposAntigos = await sheet?.values.row(1);
     final campos = this.campos;
     var camposNovo;
@@ -103,25 +102,42 @@ class _TranscribeState extends State<Transcribe> {
       error = 2;
       return error;
     }
-
-    print(chatCompletion.choices.first.message.content);
     DateTime data = DateTime.now();
-    var resultadoGpt =
-    json.decode(chatCompletion.choices.first.message.content);
+    String newData = data.toString();
+    newData = newData.substring(0, 19);
+    var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
     print(resultadoGpt);
     Map<String, dynamic> novoMapa = {
-      "data": data, // Substitua pela sua data real
+      "Data": newData, // Substitua pela sua data real
       ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
     print(novoMapa);
+    print(newData);
+    // convertendo para numerico ao verificar existencia da data
+    DateTime dataTeste = DateTime.parse(newData);
+    double numeroDeSerie = (dataTeste.millisecondsSinceEpoch / 86400000) + 25569;
+    String testeFinal = numeroDeSerie.toString();
+    if(testeFinal.length > 15){
+      testeFinal = testeFinal.substring(0, 15);
+    }
+    print(numeroDeSerie);
     if(novoMapa != null){
       await sheet?.values.map.appendRow(novoMapa);
     }
-    var colunaDeDatas = await sheet?.values.column(1);
+    List<String>? colunaDeDatas = await sheet?.values.columnByKey('Data');
+    if(colunaDeDatas != null){
+      colunaDeDatas = colunaDeDatas.map((string) {
+        if (string.length > 15) {
+          return string.substring(0, 15); // Pega os primeiros 15 caracteres
+        }
+        return string; // Retorna a string original, pois ela já tem 15 caracteres ou menos
+      }).toList();
+    }
     // Verifica se a data está presente na coluna de datas.
+    print(colunaDeDatas);
     if (colunaDeDatas != null){
-      if (colunaDeDatas.contains(data) != true) {
+      if (colunaDeDatas.contains(testeFinal) != true) {
         error = 3;
         return error;
       }
@@ -143,19 +159,18 @@ class _TranscribeState extends State<Transcribe> {
               print(widget.audioPath);
               //Quando tivermos uma chave funcionando podemos testar o retorno
               if (widget.audioPath != null) {
-                //call openai's transcription api
+                // call openai's transcription api
                 convertSpeechToText(widget.audioPath!).then((value) {
                   setState(() {
                     text = value;
                     print(text);
-                    if (text != null){
+                    if (text != null) {
                       // 0 - não erros
                       // 1 - erro achando planilha
                       // 2 - erro gpt
                       // 3 - erro inserir planilha
                       Future<int> mensagem = main_service(text!);
                       mensagem.then((result) {
-                        print(result);
                         if (result == 1) {
                           // Handle error finding spreadsheet
                           mensagemCode = 'Houve um erro ao acessar a planilha, verifique o link no perfil';
@@ -173,21 +188,18 @@ class _TranscribeState extends State<Transcribe> {
                           mensagemCode = 'A planilha preenchida pode ser acessada';
                           print('código 0 de retorno');
                         }
-                        else {
-                          print("deu ruim!");
-                          print(mensagem);
-                        }
+
+                        // Agora que você atualizou a mensagemCode, navegue para a próxima tela aqui
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => End(pacient_link_sheets: widget.pacient.link_sheets, mensagemCode: mensagemCode)),
+                        );
                       });
                     }
                   });
                 });
               }
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                    builder: (context) =>
-                        End(pacient_link_sheets: widget.pacient.link_sheets, mensagemCode: mensagemCode)),
-              );
             },
             style: ElevatedButton.styleFrom(
               padding: EdgeInsets.zero,
