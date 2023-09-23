@@ -1,19 +1,13 @@
-import 'dart:ffi';
-import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:anotai_fisio/provider/pacients_provider.dart';
 import 'package:anotai_fisio/views/pacient_form.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:anotai_fisio/views/customize.dart';
 
-class PacientsList extends StatelessWidget {
+class Pacientes extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final Pacients pacients = Provider.of(context);
-    final double fem = 1;
-    final double ffem = 1.5;
 
     return Scaffold(
       appBar: AppBar(
@@ -53,26 +47,12 @@ class PacientTile extends StatelessWidget {
       backgroundColor: Colors.deepPurple,
     );
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        Navigator.of(context).pop(pacient);
+      },
       child: ListTile(
         leading: avatar,
         title: Text(pacient.name),
-        trailing: Container(
-          width: 30,
-          child: Align(
-            alignment: Alignment.centerRight,
-            child: IconButton(
-              icon: Icon(Icons.edit),
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (context) => PacientForm(id: pacient.id)),
-                );
-              },
-            ),
-          ),
-        ),
       ),
     );
   }

@@ -11,18 +11,17 @@ class End extends StatelessWidget {
   final String? pacient_link_sheets;
   final String mensagemCode;
 
-  const End({Key? key, required this.pacient_link_sheets, required this.mensagemCode}) : super(key: key);
+  const End(
+      {Key? key, required this.pacient_link_sheets, required this.mensagemCode})
+      : super(key: key);
 
-  void updateText(){
-
-  }
+  void updateText() {}
 
   @override
   Widget build(BuildContext context) {
     double fem = 1;
     double ffem = 1;
     double svgSize = 300;
-    String user = 'Fisio';
     double screenPadding = 15;
     double rowGap = 20;
     final Uri _url = Uri.parse(
@@ -102,47 +101,19 @@ class End extends StatelessWidget {
                     ],
                   ),
                 ),
-                // Container(
-                //   margin: EdgeInsets.fromLTRB(
-                //       0 * fem, 0 * fem, 0 * fem, rowGap * fem),
-                //   width: double.infinity,
-                //   height: 50 * fem,
-                //   child: Stack(
-                //     children: [
-                //       Positioned(
-                //         // labeltextu8j (1:618)
-                //         child: Align(
-                //           child: SizedBox(
-                //             child: Text(
-                //               '$user, a planilha preenchida pode ser acessada por esse link:',
-                //               style: GoogleFonts.roboto(
-                //                 fontSize: 20 * ffem,
-                //                 fontWeight: FontWeight.w400,
-                //                 height: 1.2 * ffem / fem,
-                //                 letterSpacing: 0.5 * fem,
-                //                 color: Color(0xffffffff),
-                //               ),
-                //               textAlign: TextAlign.center,
-                //             ),
-                //           ),
-                //         ),
-                //       ),
-                //     ],
-                //   ),
-                // ),
-                // InkWell(
-                //     child: Text(
-                //       'Abrir no Browser',
-                //       style: GoogleFonts.roboto(
-                //         fontSize: 12 * ffem,
-                //         decoration: TextDecoration.underline,
-                //         fontWeight: FontWeight.w400,
-                //         height: 1.2 * ffem / fem,
-                //         letterSpacing: 0.5 * fem,
-                //         color: Color(0xff0000ff),
-                //       ),
-                //     ),
-                //     onTap: () => launchUrl(_url)),
+                InkWell(
+                    child: Text(
+                      'Abrir no Browser',
+                      style: GoogleFonts.roboto(
+                        fontSize: 12 * ffem,
+                        decoration: TextDecoration.underline,
+                        fontWeight: FontWeight.w400,
+                        height: 1.2 * ffem / fem,
+                        letterSpacing: 0.5 * fem,
+                        color: Color(0xff0000ff),
+                      ),
+                    ),
+                    onTap: () => launchUrl(_url)),
                 IconButton(
                     onPressed: () {
                       Navigator.pushReplacement(

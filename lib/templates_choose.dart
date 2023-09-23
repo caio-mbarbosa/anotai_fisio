@@ -1,20 +1,16 @@
-import 'dart:ffi';
-import 'package:anotai_fisio/models/pacient.dart';
-import 'package:anotai_fisio/record.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:anotai_fisio/models/prontuario.dart';
-import 'package:anotai_fisio/transcribe.dart';
 import 'dart:convert';
 
-class CustomizeView extends StatefulWidget {
+class Templates extends StatefulWidget {
   @override
   _ModelosScreenState createState() => _ModelosScreenState();
 
-  CustomizeView();
+  Templates();
 }
 
-class _ModelosScreenState extends State<CustomizeView> {
+class _ModelosScreenState extends State<Templates> {
   List<Modelo> modelos = [];
   _ModelosScreenState();
 
@@ -129,7 +125,6 @@ class EditScreen extends StatefulWidget {
 class _EditScreenState extends State<EditScreen> {
   List<String> campos = [];
   int campoCount = 0;
-
   _EditScreenState();
 
   @override
@@ -210,6 +205,14 @@ class _EditScreenState extends State<EditScreen> {
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
+                IconButton(
+                  icon: Icon(Icons.check_box),
+                  color: Color(0xff764abc),
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                    Navigator.of(context).pop(widget.modelo);
+                  },
+                ),
                 IconButton(
                   icon: Icon(Icons.add),
                   onPressed: () {

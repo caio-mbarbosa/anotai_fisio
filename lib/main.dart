@@ -35,119 +35,115 @@ class MyApp extends StatelessWidget {
     return Scaffold(
         appBar: kDebugMode
             ? AppBar(
-          centerTitle: true,
-          title: const Text(
-            'Home',
-          ),
-          backgroundColor: const Color(0xff764abc),
-        )
+                centerTitle: true,
+                title: const Text(
+                  'Home',
+                ),
+                backgroundColor: const Color(0xff764abc),
+              )
             : null,
         drawer: kDebugMode
             ? Drawer(
-          child: ListView(
-            // Important: Remove any padding from the ListView.
-            padding: EdgeInsets.zero,
-            children: [
-              const DrawerHeader(
-                decoration: BoxDecoration(
-                  color: const Color(0xff764abc),
+                child: ListView(
+                  // Important: Remove any padding from the ListView.
+                  padding: EdgeInsets.zero,
+                  children: [
+                    const DrawerHeader(
+                      decoration: BoxDecoration(
+                        color: const Color(0xff764abc),
+                      ),
+                      child: Text('Menu'),
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.record_voice_over,
+                      ),
+                      title: const Text('Gravação'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const Recording(
+                                  // campos: ['asdas'],
+                                  // pacient: Pacient(
+                                  //     id: '100',
+                                  //     name: 'TesteDummy',
+                                  //     age: 11,
+                                  //     sex: 'M',
+                                  //     link_sheets: 'abc')
+                                  )),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.home,
+                      ),
+                      title: const Text('Home'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Home()),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.start,
+                      ),
+                      title: const Text('Start'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => Start()),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.train,
+                      ),
+                      title: const Text('Cadastrar Paciente'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => PacientsList()),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.addchart_sharp,
+                      ),
+                      title: const Text('Customizar Prontuários'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => CustomizeView()),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.exit_to_app,
+                      ),
+                      title: const Text('End'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => End(
+                                  pacient_link_sheets:
+                                      '1uNxaDQBfw4DArgUpP51EucaRNLnrwghR5VpO8hmAoW8',
+                                  mensagemCode: 'Placeholder')),
+                        );
+                      },
+                    ),
+                  ],
                 ),
-                child: Text('Menu'),
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.record_voice_over,
-                ),
-                title: const Text('Gravação'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const Recording(
-                            campos: ['asdas'],
-                            pacient: Pacient(
-                                id: '100',
-                                name: 'TesteDummy',
-                                age: 11,
-                                sex: 'M',
-                                link_sheets: 'abc'))),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.home,
-                ),
-                title: const Text('Home'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Home()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.start,
-                ),
-                title: const Text('Start'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => Start()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.train,
-                ),
-                title: const Text('Cadastrar Paciente'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => PacientsList()),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.addchart_sharp,
-                ),
-                title: const Text('Customizar Prontuários'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => CustomizeView(
-                            pacient: Pacient(
-                                id: '100',
-                                name: 'TesteDummy',
-                                age: 11,
-                                sex: 'M',
-                                link_sheets: 'abc'))),
-                  );
-                },
-              ),
-              ListTile(
-                leading: Icon(
-                  Icons.exit_to_app,
-                ),
-                title: const Text('End'),
-                onTap: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => End(
-                            pacient_link_sheets:
-                            '1uNxaDQBfw4DArgUpP51EucaRNLnrwghR5VpO8hmAoW8', mensagemCode: 'Placeholder')),
-                  );
-                },
-              ),
-            ],
-          ),
-        )
+              )
             : null,
         body: Start());
   }

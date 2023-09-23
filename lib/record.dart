@@ -1,18 +1,24 @@
 import 'dart:async';
 
 import 'package:anotai_fisio/models/pacient.dart';
+import 'package:anotai_fisio/models/prontuario.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:record/record.dart';
 import 'package:avatar_glow/avatar_glow.dart';
 import 'package:audio_wave/audio_wave.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:dart_numerics/dart_numerics.dart' as numerics;
 
 import 'package:anotai_fisio/audio_player.dart';
 import 'transcribe.dart';
+import 'views/pacients_choose.dart';
+import 'templates_choose.dart';
+import 'views/pacients.dart';
+import 'views/customize.dart';
 
 class AudioRecorder extends StatefulWidget {
-  final void Function(String path) onStop;
+  final void Function(String path, Modelo modelo, Pacient paciente) onStop;
 
   const AudioRecorder({Key? key, required this.onStop}) : super(key: key);
 
@@ -28,6 +34,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
   RecordState _recordState = RecordState.stop;
   StreamSubscription<Amplitude>? _amplitudeSub;
   Amplitude? _amplitude;
+  Modelo? modelo;
 
   @override
   void initState() {
@@ -42,8 +49,30 @@ class _AudioRecorderState extends State<AudioRecorder> {
     super.initState();
   }
 
+  Future<Pacient?> openPacientePopUp() => showDialog<Pacient>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Escolha o Paciente"),
+          content: Pacientes(),
+        ),
+      );
+
+  Future<Modelo?> openTemplatePopUp() => showDialog<Modelo>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Escolha o template"),
+          content: Templates(),
+        ),
+      );
+
   Future<void> _start() async {
     try {
+      final Modelo? template;
+      template = await openTemplatePopUp();
+      print(template);
+
+      setState(() => modelo = template);
+
       if (await _audioRecorder.hasPermission()) {
         // We don't do anything with this but printing
         final isSupported = await _audioRecorder.isEncoderSupported(
@@ -68,14 +97,18 @@ class _AudioRecorderState extends State<AudioRecorder> {
     }
   }
 
-  Future<void> _stop() async {
+  Future<void> _stop(template) async {
+    final Pacient? paciente;
+    paciente = await openPacientePopUp();
+    print(paciente);
+
     _timer?.cancel();
     _recordDuration = 0;
 
     final path = await _audioRecorder.stop();
 
-    if (path != null) {
-      widget.onStop(path);
+    if (path != null && template != null && paciente != null) {
+      widget.onStop(path, template, paciente);
     }
   }
 
@@ -91,33 +124,122 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   @override
   Widget build(BuildContext context) {
-    double columnGap = 100;
     double fem = .9;
-    double rowGap = 50;
+    double ffem = .8;
+    double rowGap = 1;
+    String user = 'fisio';
     return Column(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
-        if (_recordState != RecordState.stop) ...[
-          // Ainda não consegui implementar funcionalidade
-          // IconButton(
-          //     onPressed: () {},
-          //     icon: Icon(Icons.close, color: Color(0xFF000000))),
-          _buildTimer()
-        ],
-        Container(
-          margin: EdgeInsets.fromLTRB(
-              rowGap * fem, rowGap * fem, rowGap * fem, rowGap * fem),
-          child: _buildStartControl(),
-        ),
         if (_recordState == RecordState.stop) ...[
-          const Text("Clique para gravar")
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            Container(
+                width: 100 * fem,
+                height: 100 * fem,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 48 * fem,
+                          height: 48 * fem,
+                          decoration: ShapeDecoration(
+                              shape: CircleBorder(eccentricity: 1),
+                              color: Colors.white),
+                          child: IconButton.filled(
+                              icon: const Icon(Icons.person),
+                              color: Color(0xff552a7f),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => PacientsList()),
+                                );
+                              })),
+                      Text(
+                        "Pacientes",
+                        style: GoogleFonts.roboto(
+                          fontSize: 12 * ffem,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2 * ffem / fem,
+                          letterSpacing: 0.5 * fem,
+                          color: Color(0xffffffff),
+                        ),
+                      )
+                    ])),
+            Text(
+              'Olá, $user 👋',
+              style: GoogleFonts.roboto(
+                fontSize: 24 * ffem,
+                fontWeight: FontWeight.w400,
+                height: 1.2 * ffem / fem,
+                letterSpacing: 0.5 * fem,
+                color: Color(0xffffffff),
+              ),
+            ),
+            Container(
+                width: 100 * fem,
+                height: 100 * fem,
+                child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                          width: 48 * fem,
+                          height: 48 * fem,
+                          decoration: ShapeDecoration(
+                              shape: CircleBorder(eccentricity: 1),
+                              color: Colors.white),
+                          child: IconButton.filled(
+                              icon: const Icon(Icons.file_open_outlined),
+                              color: Color(0xff552a7f),
+                              onPressed: () {
+                                Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => CustomizeView()),
+                                );
+                              })),
+                      Text(
+                        "Template",
+                        style: GoogleFonts.roboto(
+                          fontSize: 12 * ffem,
+                          fontWeight: FontWeight.w400,
+                          height: 1.2 * ffem / fem,
+                          letterSpacing: 0.5 * fem,
+                          color: Color(0xffffffff),
+                        ),
+                      )
+                    ]))
+          ]),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          _buildStartControl(),
+          const Text("Clique para gravar"),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap)
         ],
         if (_recordState != RecordState.stop) ...[
-          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          IconButton(
+              onPressed: () {},
+              icon: Icon(Icons.close, color: Color(0xFF000000))),
+          _buildTimer(),
+          _buildStartControl(),
+          Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
+            SizedBox(height: rowGap),
             _buildPauseResumeControl(),
-            SizedBox(width: columnGap),
-            _buildRecordStopControl()
+            SizedBox(height: rowGap),
+            SizedBox(height: rowGap),
+            _buildRecordStopControl(),
+            SizedBox(height: rowGap),
           ]),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
+          SizedBox(height: rowGap),
         ],
       ],
     );
@@ -147,7 +269,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
         child: InkWell(
           child: SizedBox(width: 56, height: 56, child: icon),
           onTap: () {
-            (_recordState != RecordState.stop) ? _stop() : _start();
+            (_recordState != RecordState.stop) ? _stop(modelo) : _start();
           },
         ),
       ),
@@ -211,7 +333,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
             child: InkWell(
               child: SizedBox(child: icon),
               onTap: () {
-                (_recordState != RecordState.stop) ? null : _start();
+                (_recordState != RecordState.stop) ? _stop(modelo) : _start();
               },
             ),
           ),
@@ -276,23 +398,19 @@ class _AudioRecorderState extends State<AudioRecorder> {
 }
 
 class Recording extends StatefulWidget {
-  final List<String> campos;
-  final Pacient pacient;
-  const Recording({Key? key, required this.campos, required this.pacient})
-      : super(key: key);
+  const Recording({Key? key}) : super(key: key);
 
   @override
-  State<Recording> createState() =>
-      _RecordingState(campos: campos, pacient: pacient);
+  State<Recording> createState() => _RecordingState();
 }
 
 class _RecordingState extends State<Recording> {
   bool showPlayer = false;
   String? audioPath;
-  final List<String> campos;
-  final Pacient pacient;
+  Modelo? modelo;
+  Pacient? pacient;
 
-  _RecordingState({required this.campos, required this.pacient});
+  _RecordingState();
 
   @override
   void initState() {
@@ -300,50 +418,168 @@ class _RecordingState extends State<Recording> {
     super.initState();
   }
 
+  Future<Pacient?> openPacientePopUp() => showDialog<Pacient>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Escolha o Paciente"),
+          content: Pacientes(),
+        ),
+      );
+
+  Future<Modelo?> openTemplatePopUp() => showDialog<Modelo>(
+        context: context,
+        builder: (context) => AlertDialog(
+          title: Text("Escolha o template"),
+          content: Templates(),
+        ),
+      );
+
   @override
   Widget build(BuildContext context) {
     double fem = .9;
-    double screenPadding = 50;
+    double screenPadding = 20;
     double rowGap = 2;
     return MaterialApp(
       home: Scaffold(
+        appBar: showPlayer
+            ? AppBar(
+                centerTitle: true,
+                title: Text('Conferir informações'),
+                //titleTextStyle: TextStyle(color: Colors.black),
+                backgroundColor: const Color(0xff764abc),
+              )
+            : null,
         body: Container(
-          padding: EdgeInsets.fromLTRB(
-              screenPadding * fem,
-              3 * screenPadding * fem,
-              screenPadding * fem,
-              screenPadding * fem),
+          padding: EdgeInsets.fromLTRB(screenPadding * fem, screenPadding * fem,
+              screenPadding * fem, screenPadding * fem),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: Color(0xFF9175AC),
+            color: showPlayer ? Colors.white : Color(0xFF9175AC),
           ),
           child: showPlayer
               ? Column(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                SizedBox(height: rowGap),
-                SizedBox(height: rowGap),
-                AudioPlayer(
-                  source: audioPath!,
-                  onDelete: () {
-                    setState(() => showPlayer = false);
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(5),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: InkWell(
+                              child: Text(
+                                pacient!.name,
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 18),
+                              ),
+                              onTap: () async {
+                                Pacient? paciente = await openPacientePopUp();
+                                if (paciente != null) {
+                                  setState(() {
+                                    pacient = paciente;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            left: 30,
+                            top: 12,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  bottom: 10, left: 10, right: 10),
+                              color: Colors.white,
+                              child: Text(
+                                'Paciente',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      Stack(
+                        children: <Widget>[
+                          Container(
+                            width: double.infinity,
+                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                            padding: EdgeInsets.all(20),
+                            decoration: BoxDecoration(
+                              border: Border.all(color: Colors.grey, width: 1),
+                              borderRadius: BorderRadius.circular(5),
+                              shape: BoxShape.rectangle,
+                            ),
+                            child: InkWell(
+                              child: Text(modelo!.nome,
+                                  style: TextStyle(
+                                      color: Colors.black, fontSize: 18)),
+                              onTap: () async {
+                                Modelo? template = await openTemplatePopUp();
+                                if (template != null) {
+                                  setState(() {
+                                    modelo = template;
+                                  });
+                                }
+                              },
+                            ),
+                          ),
+                          Positioned(
+                            left: 30,
+                            top: 12,
+                            child: Container(
+                              padding: EdgeInsets.only(
+                                  bottom: 10, left: 10, right: 10),
+                              color: Colors.white,
+                              child: Text(
+                                'Template',
+                                style: TextStyle(
+                                    color: Colors.black, fontSize: 12),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      AudioPlayer(
+                        source: audioPath!,
+                        onDelete: () {
+                          setState(() => showPlayer = false);
+                        },
+                      ),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      Transcribe(
+                          audioPath: audioPath!,
+                          campos: modelo!.campos,
+                          pacient: pacient!),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                      SizedBox(height: rowGap),
+                    ])
+              : AudioRecorder(
+                  onStop: (path, template, paciente) {
+                    if (kDebugMode) print('Recorded file path: $path');
+                    print(modelo);
+                    print(pacient);
+                    setState(() {
+                      audioPath = path;
+                      modelo = template;
+                      pacient = paciente;
+                      showPlayer = true;
+                    });
                   },
                 ),
-                Transcribe(
-                    audioPath: audioPath!,
-                    campos: campos,
-                    pacient: pacient),
-                SizedBox(height: rowGap),
-              ])
-              : AudioRecorder(
-            onStop: (path) {
-              if (kDebugMode) print('Recorded file path: $path');
-              setState(() {
-                audioPath = path;
-                showPlayer = true;
-              });
-            },
-          ),
         ),
       ),
     );
