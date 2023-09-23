@@ -71,8 +71,18 @@ class _TranscribeState extends State<Transcribe> {
     print(this.campos);
     print(this.pacient.link_sheets);
     print("end");
+    var camposAntigos = await sheet?.values.row(1);
     final campos = this.campos;
-    await sheet?.values.insertRow(1, campos);
+    if (camposAntigos != null){
+      var camposNovo = List.from(camposAntigos)..addAll(campos);
+      camposNovo = List.from(['Data'])..addAll(camposNovo);
+      camposNovo = camposNovo.toSet().toList();
+      await sheet?.values.insertRow(1, camposNovo);
+    }
+    else{
+      await sheet?.values.insertRow(1, campos);
+    }
+
     //final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
@@ -98,14 +108,16 @@ class _TranscribeState extends State<Transcribe> {
     var resultadoGpt =
     json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
+    print(resultadoGpt);
     Map<String, dynamic> novoMapa = {
       "data": data, // Substitua pela sua data real
       ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
+    print(novoMapa);
     if(novoMapa != null){
       await sheet?.values.map.appendRow(novoMapa);
     }
-    var colunaDeDatas = await sheet?.values.column(0);
+    var colunaDeDatas = await sheet?.values.column(1);
     // Verifica se a data está presente na coluna de datas.
     if (colunaDeDatas != null){
       if (colunaDeDatas.contains(data) != true) {
