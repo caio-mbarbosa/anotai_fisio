@@ -45,7 +45,6 @@ dependencies:
   dart_numerics: ^0.0.6
   url_launcher: ^6.1.14
   intl: ^0.17.0
-  loading_overlay: any
 
 
   # The following adds the Cupertino Icons font to your application.

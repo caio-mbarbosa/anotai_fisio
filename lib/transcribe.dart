@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 
-import 'package:loading_overlay/loading_overlay.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
@@ -30,6 +29,7 @@ class Transcribe extends StatefulWidget {
 }
 
 class _TranscribeState extends State<Transcribe> {
+  bool _isLoading = false;
   String? text;
   final Pacient pacient;
   final List<String> campos;
@@ -150,75 +150,99 @@ class _TranscribeState extends State<Transcribe> {
   Widget build(BuildContext context) {
     double fem = .9;
     double ffem = 1;
+
     return LayoutBuilder(builder: (context, constraints) {
       return Container(
-          width: 200,
-          child: ElevatedButton(
-            onPressed: () async {
-              print("Apertou");
-              print(widget.audioPath);
-              //Quando tivermos uma chave funcionando podemos testar o retorno
-              if (widget.audioPath != null) {
-                // call openai's transcription api
-                convertSpeechToText(widget.audioPath!).then((value) {
-                  setState(() {
-                    text = value;
-                    print(text);
-                    if (text != null) {
-                      // 0 - não erros
-                      // 1 - erro achando planilha
-                      // 2 - erro gpt
-                      // 3 - erro inserir planilha
-                      Future<int> mensagem = main_service(text!);
-                      mensagem.then((result) {
-                        if (result == 1) {
-                          // Handle error finding spreadsheet
-                          mensagemCode = 'Houve um erro ao acessar a planilha, verifique o link no perfil';
-                          print('código 1 de retorno');
-                        } else if (result == 2) {
-                          // Handle error with GPT
-                          mensagemCode = 'Houve um erro ao processar os dados, tente novamente';
-                          print('código 2 de retorno');
-                        } else if (result == 3) {
-                          // Handle error inserting spreadsheet
-                          mensagemCode = 'Houve um erro ao inserir os dados, tente novamente';
-                          print('código 3 de retorno');
-                        } else if (result == 0) {
-                          // No error
-                          mensagemCode = 'A planilha preenchida pode ser acessada';
-                          print('código 0 de retorno');
-                        }
+        width: 200,
+        child: ElevatedButton(
+          onPressed: () async {
+            print("Apertou");
+            _isLoading = true;
+            print(widget.audioPath);
 
-                        // Agora que você atualizou a mensagemCode, navegue para a próxima tela aqui
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => End(pacient_link_sheets: widget.pacient.link_sheets, mensagemCode: mensagemCode)),
-                        );
-                      });
-                    }
-                  });
+            if (widget.audioPath != null) {
+              // Chame a API de transcrição do OpenAI
+              convertSpeechToText(widget.audioPath!).then((value) {
+                setState(() {
+                  text = value;
+                  print(text);
+                  if (text != null) {
+                    // 0 - não erros
+                    // 1 - erro achando planilha
+                    // 2 - erro gpt
+                    // 3 - erro inserir planilha
+                    Future<int> mensagem = main_service(text!);
+                    mensagem.then((result) {
+                      if (result == 1) {
+                        // Handle error finding spreadsheet
+                        mensagemCode =
+                        'Houve um erro ao acessar a planilha, verifique o link no perfil';
+                        print('código 1 de retorno');
+                      } else if (result == 2) {
+                        // Handle error with GPT
+                        mensagemCode =
+                        'Houve um erro ao processar os dados, tente novamente';
+                        print('código 2 de retorno');
+                      } else if (result == 3) {
+                        // Handle error inserting spreadsheet
+                        mensagemCode =
+                        'Houve um erro ao inserir os dados, tente novamente';
+                        print('código 3 de retorno');
+                      } else if (result == 0) {
+                        // No error
+                        mensagemCode =
+                        'A planilha preenchida pode ser acessada';
+                        print('código 0 de retorno');
+                      }
+                      // Agora que você atualizou a mensagemCode, navegue para a próxima tela aqui
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => End(
+                            pacient_link_sheets: widget.pacient.link_sheets,
+                            mensagemCode: mensagemCode,
+                          ),
+                        ),
+                      );
+                    });
+                  }
                 });
-              }
-            },
-            style: ElevatedButton.styleFrom(
-              padding: EdgeInsets.zero,
-              backgroundColor: Color(0xff552a7f),
-              shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(100 * fem)),
+              });
+            }
+          },
+          style: ElevatedButton.styleFrom(
+            padding: EdgeInsets.zero,
+            backgroundColor: Color(0xff552a7f),
+            shape: RoundedRectangleBorder(
+              borderRadius: BorderRadius.circular(100 * fem),
             ),
-            child: Text(
-              'Submeter Áudio',
-              textAlign: TextAlign.center,
-              style: GoogleFonts.roboto(
-                fontSize: 14 * ffem,
-                fontWeight: FontWeight.w500,
-                height: 1.4285714286 * ffem / fem,
-                letterSpacing: 0.1000000015 * fem,
-                color: Color.fromRGBO(247, 242, 250, 1),
+          ),
+          child: Stack( // Use um Stack para sobrepor o botão e o CircularProgressIndicator
+            alignment: Alignment.center,
+            children: [
+              Visibility(visible: !_isLoading,
+                  child: Text(
+                'Submeter Áudio',
+                textAlign: TextAlign.center,
+                style: GoogleFonts.roboto(
+                  fontSize: 14 * ffem,
+                  fontWeight: FontWeight.w500,
+                  height: 1.4285714286 * ffem / fem,
+                  letterSpacing: 0.1000000015 * fem,
+                  color: Color.fromRGBO(247, 242, 250, 1),
+                ),
+              )),
+              Visibility(
+                visible: _isLoading, // Controla a visibilidade do CircularProgressIndicator
+                child: CircularProgressIndicator(
+                  color: Colors.deepPurple,
+                  backgroundColor: Colors.black,
+                ),
               ),
-            ),
-          ));
+            ],
+          ),
+        ),
+      );
     });
   }
 }
