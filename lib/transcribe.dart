@@ -75,11 +75,11 @@ class _TranscribeState extends State<Transcribe> {
     var camposNovo;
     if (camposAntigos != null){
       camposNovo = List.from(camposAntigos)..addAll(campos);
-      camposNovo = List.from(['Data'])..addAll(camposNovo);
+      camposNovo = List.from(['Id','Data'])..addAll(camposNovo);
       camposNovo = camposNovo.toSet().toList();
     }
     else{
-      camposNovo = List.from(['Data'])..addAll(campos);
+      camposNovo = List.from(['Id','Data'])..addAll(campos);
     }
     await sheet?.values.insertRow(1, camposNovo);
 
@@ -108,36 +108,26 @@ class _TranscribeState extends State<Transcribe> {
     var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
     print(resultadoGpt);
+    var colunaIds = await sheet?.values.columnByKey('Id');
+    int novoId = colunaIds.length +1;
     Map<String, dynamic> novoMapa = {
+      "Id": novoId,
       "Data": newData, // Substitua pela sua data real
       ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
     print(novoMapa);
     print(newData);
     // convertendo para numerico ao verificar existencia da data
-    DateTime dataTeste = DateTime.parse(newData);
-    double numeroDeSerie = (dataTeste.millisecondsSinceEpoch / 86400000) + 25569;
-    String testeFinal = numeroDeSerie.toString();
-    if(testeFinal.length > 15){
-      testeFinal = testeFinal.substring(0, 15);
-    }
-    print(numeroDeSerie);
+
     if(novoMapa != null){
       await sheet?.values.map.appendRow(novoMapa);
     }
-    List<String>? colunaDeDatas = await sheet?.values.columnByKey('Data');
-    if(colunaDeDatas != null){
-      colunaDeDatas = colunaDeDatas.map((string) {
-        if (string.length > 15) {
-          return string.substring(0, 15); // Pega os primeiros 15 caracteres
-        }
-        return string; // Retorna a string original, pois ela já tem 15 caracteres ou menos
-      }).toList();
-    }
+    List<int>? colunaDeIds = await sheet?.values.columnByKey('Id');
+
     // Verifica se a data está presente na coluna de datas.
-    print(colunaDeDatas);
-    if (colunaDeDatas != null){
-      if (colunaDeDatas.contains(testeFinal) != true) {
+    print(colunaDeIds);
+    if (colunaDeIds != null){
+      if (colunaDeIds.contains(novoId) != true) {
         error = 3;
         return error;
       }
