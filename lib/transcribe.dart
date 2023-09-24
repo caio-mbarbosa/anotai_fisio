@@ -110,6 +110,8 @@ class _TranscribeState extends State<Transcribe> {
     print(resultadoGpt);
     var colunaIds = await sheet?.values.columnByKey('Id');
     int novoId = colunaIds.length +1;
+    print(colunaIds);
+    print(novoId);
     Map<String, dynamic> novoMapa = {
       "Id": novoId,
       "Data": newData, // Substitua pela sua data real
@@ -122,12 +124,16 @@ class _TranscribeState extends State<Transcribe> {
     if(novoMapa != null){
       await sheet?.values.map.appendRow(novoMapa);
     }
-    List<int>? colunaDeIds = await sheet?.values.columnByKey('Id');
-
-    // Verifica se a data está presente na coluna de datas.
+    List<String>? colunaDeIds = await sheet?.values.columnByKey('Id');
+    List<int> listaDeInteiros = [];
     print(colunaDeIds);
     if (colunaDeIds != null){
-      if (colunaDeIds.contains(novoId) != true) {
+      listaDeInteiros = colunaDeIds.map((string) => int.parse(string)).toList();
+    }
+    // Verifica se a data está presente na coluna de datas.
+    print(listaDeInteiros);
+    if (listaDeInteiros != []){
+      if (listaDeInteiros.contains(novoId) != true) {
         error = 3;
         return error;
       }
