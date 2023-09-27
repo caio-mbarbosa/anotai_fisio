@@ -69,21 +69,21 @@ class _TranscribeState extends State<Transcribe> {
     DateTime data2 = DateTime.now();
     String newData2 = data2.toString();
     newData2 = newData2.substring(0, 19);
-    try{
-      if(pacient.hasInserted == false){
+    try {
+      if (pacient.hasInserted == false) {
         await ss.addWorksheet("Consulta " + newData2);
         sheet = ss.worksheetByTitle("Consulta " + newData2);
         sheetDeletar = ss.worksheetByTitle("Página1");
         ss.deleteWorksheet(sheetDeletar);
         pacient.hasInserted = true;
       }
-      else{
+      else {
         //criar nova aba
         await ss.addWorksheet("Consulta " + newData2);
         sheet = ss.worksheetByTitle("Consulta " + newData2);
       }
     }
-    on Exception catch(_){
+    on Exception catch (_) {
       error = 1;
       return error;
     }
@@ -95,7 +95,8 @@ class _TranscribeState extends State<Transcribe> {
       camposNovo = List.from(['Data'])..addAll(camposNovo);
       camposNovo = camposNovo.toSet().toList();
     }*/
-    camposNovo = List.from(['Data'])..addAll(campos);
+    camposNovo = List.from(['Id', 'Data'])
+      ..addAll(campos);
     await sheet?.values.insertRow(1, camposNovo);
 
     //final campos = await sheet?.values.row(1);
@@ -120,40 +121,37 @@ class _TranscribeState extends State<Transcribe> {
     DateTime data = DateTime.now();
     String newData = data.toString();
     newData = newData.substring(0, 19);
-    var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
+    var resultadoGpt = json.decode(
+        chatCompletion.choices.first.message.content);
     // Inserir na planilha:
     print(resultadoGpt);
-    Map<String, String> novoMapa = {
-      "Data": newData, // Substitua pela sua data real
-      ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
+    var colunaIds = await sheet?.values.columnByKey('Id');
+    int novoId = colunaIds.length + 1;
+    Map<String, dynamic> novoMapa = {
+      "Id": novoId,
+      "Data": newData,
+      // Substitua pela sua data real
+      ...resultadoGpt,
+      // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
 
     print(novoMapa);
     print(newData);
     // convertendo para numerico ao verificar existencia da data
-    DateTime dataTeste = DateTime.parse(newData);
-    double numeroDeSerie = (dataTeste.millisecondsSinceEpoch / 86400000) + 25569;
-    String testeFinal = numeroDeSerie.toString();
-    if(testeFinal.length > 15){
-      testeFinal = testeFinal.substring(0, 15);
-    }
-    print(numeroDeSerie);
-    if(novoMapa != null){
+
+    if (novoMapa != null) {
       await sheet?.values.map.appendRow(novoMapa);
     }
-    List<String>? colunaDeDatas = await sheet?.values.columnByKey('Data');
-    if(colunaDeDatas != null){
-      colunaDeDatas = colunaDeDatas.map((string) {
-        if (string.length > 15) {
-          return string.substring(0, 15); // Pega os primeiros 15 caracteres
-        }
-        return string; // Retorna a string original, pois ela já tem 15 caracteres ou menos
-      }).toList();
+    List<String>? colunaDeIds = await sheet?.values.columnByKey('Id');
+    List<int> listaDeInteiros = [];
+    print(colunaDeIds);
+    if (colunaDeIds != null) {
+      listaDeInteiros = colunaDeIds.map((string) => int.parse(string)).toList();
     }
-    // Verifica se a data está presente na coluna de datas.
-    print(colunaDeDatas);
-    if (colunaDeDatas != null){
-      if (colunaDeDatas.contains(testeFinal) != true) {
+
+    // Verifica se a ID está presente na planilha.
+    if (listaDeInteiros != []){
+      if (listaDeInteiros.contains(novoId) != true) {
         error = 3;
         return error;
       }
