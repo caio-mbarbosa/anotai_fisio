@@ -26,7 +26,8 @@ class Pacients with ChangeNotifier{
           name: pacient.name,
           age: pacient.age,
           sex: pacient.sex,
-          link_sheets: pacient.link_sheets
+          link_sheets: pacient.link_sheets,
+          hasInserted: false
       ));
     } else {
       // adicionar
@@ -37,7 +38,8 @@ class Pacients with ChangeNotifier{
           name: pacient.name,
           age: pacient.age,
           sex: pacient.sex,
-          link_sheets: pacient.link_sheets
+          link_sheets: pacient.link_sheets,
+          hasInserted: false
       ));
     }
     notifyListeners();

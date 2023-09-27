@@ -63,7 +63,8 @@ class PacientForm extends StatelessWidget{
                 name: _formData['name'].toString(),
                 age: int.parse(_formData['age'].toString()),
                 sex: _formData['sex'].toString(),
-                link_sheets: _formData['link_sheets'].toString()
+                link_sheets: _formData['link_sheets'].toString(),
+                hasInserted: false
             ));
             Navigator.of(context).pop();
             print('dei put de um pacient');

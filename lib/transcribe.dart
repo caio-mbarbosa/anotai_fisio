@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 
+import 'package:googleapis/sheets/v4.dart' as sheets;
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/foundation.dart';
@@ -10,6 +11,7 @@ import 'end.dart';
 import 'package:http/http.dart' as http;
 import 'package:gsheets/gsheets.dart';
 import 'package:dart_openai/dart_openai.dart';
+import 'package:googleapis_auth/auth_io.dart';
 
 class Transcribe extends StatefulWidget {
   final String? audioPath;
@@ -62,31 +64,44 @@ class _TranscribeState extends State<Transcribe> {
     final gsheets = GSheets(credentials);
     //final ss = await gsheets.spreadsheet(spreadsheetId);
     var sheet = null;
+    var sheetDeletar = null;
+    final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
+    DateTime data2 = DateTime.now();
+    String newData2 = data2.toString();
+    newData2 = newData2.substring(0, 19);
     try{
-      final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
-      sheet = ss.worksheetByTitle('Teste');
+      if(pacient.hasInserted == false){
+        await ss.addWorksheet("Consulta " + newData2);
+        sheet = ss.worksheetByTitle("Consulta " + newData2);
+        sheetDeletar = ss.worksheetByTitle("Página1");
+        ss.deleteWorksheet(sheetDeletar);
+        pacient.hasInserted = true;
+      }
+      else{
+        //criar nova aba
+        await ss.addWorksheet("Consulta " + newData2);
+        sheet = ss.worksheetByTitle("Consulta " + newData2);
+      }
     }
     on Exception catch(_){
       error = 1;
       return error;
     }
-    var camposAntigos = await sheet?.values.row(1);
+    //var camposAntigos = await sheet?.values.row(1);
     final campos = this.campos;
     var camposNovo;
-    if (camposAntigos != null){
+    /*if (camposAntigos != null){
       camposNovo = List.from(camposAntigos)..addAll(campos);
       camposNovo = List.from(['Data'])..addAll(camposNovo);
       camposNovo = camposNovo.toSet().toList();
-    }
-    else{
-      camposNovo = List.from(['Data'])..addAll(campos);
-    }
+    }*/
+    camposNovo = List.from(['Data'])..addAll(campos);
     await sheet?.values.insertRow(1, camposNovo);
 
     //final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
-    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:
+    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:
     
     $texto
     ''';
@@ -108,10 +123,11 @@ class _TranscribeState extends State<Transcribe> {
     var resultadoGpt = json.decode(chatCompletion.choices.first.message.content);
     // Inserir na planilha:
     print(resultadoGpt);
-    Map<String, dynamic> novoMapa = {
+    Map<String, String> novoMapa = {
       "Data": newData, // Substitua pela sua data real
       ...resultadoGpt, // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
+
     print(novoMapa);
     print(newData);
     // convertendo para numerico ao verificar existencia da data

@@ -6,16 +6,18 @@ class Pacient{
   final int age;
   final String sex;
   final String link_sheets;
+  bool hasInserted;
   // final String religiao;
   // final String estado_civil;
   // final String residencia;
   // final String naturalidade;
 
-  const Pacient({
+  Pacient({
     required this.id,
     required this.name,
     required this.age,
     required this.sex,
     required this.link_sheets,
+    required this.hasInserted
   });
 }
