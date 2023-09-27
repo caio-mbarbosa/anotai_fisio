@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'package:anotai_fisio/models/pacient.dart';
+import 'package:anotai_fisio/onboarding.dart';
 import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
 import 'package:anotai_fisio/views/customize.dart';
@@ -24,7 +25,6 @@ void main() {
     ),
   );
 }
-
 
 class MyApp extends StatelessWidget {
   const MyApp({super.key});
@@ -138,6 +138,19 @@ class MyApp extends StatelessWidget {
                                   pacient_link_sheets:
                                       '1uNxaDQBfw4DArgUpP51EucaRNLnrwghR5VpO8hmAoW8',
                                   mensagemCode: 'Placeholder')),
+                        );
+                      },
+                    ),
+                    ListTile(
+                      leading: Icon(
+                        Icons.on_device_training,
+                      ),
+                      title: const Text('Onboarding'),
+                      onTap: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => OnBoardingScreen()),
                         );
                       },
                     ),
