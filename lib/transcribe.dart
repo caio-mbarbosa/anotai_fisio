@@ -89,16 +89,16 @@ class _TranscribeState extends State<Transcribe> {
       error = 1;
       return error;
     }
-    var camposNovo;
-    camposNovo = List.from(['Data']) ..addAll(this.campos);
-    await sheet?.values.insertRow(1, camposNovo);
 
+    String resultadoCampos = "";
+    for(int i = 0; i<campos.length; i++){
+      resultadoCampos += "\"" + campos[i] + "\", ";
+    }
+    resultadoCampos = resultadoCampos.substring(0, resultadoCampos.length-2);
     OpenAI.apiKey = apiSecretKey;
-    final prompt = '''
-    Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:
-    
-    $texto
-    ''';
+    final prompt = '''Você vai ler um relato de um fisioterapeuta originado de uma ferramenta 'speech to text' após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $resultadoCampos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita e os valores de cada chave devem ser somente uma string (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:" + '\n'+'\n' $texto''';
+    print("prompt final:");
+    print(prompt);
 
     OpenAIChatCompletionModel chatCompletion =
     await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
@@ -113,18 +113,18 @@ class _TranscribeState extends State<Transcribe> {
     }
     var resultadoGpt = json.decode(
         chatCompletion.choices.first.message.content);
-    // Inserir na planilha:
-    Map<String, dynamic> novoMapa = {
-      "Data": newData,
-      ...resultadoGpt,
-      // Isso copiará todos os campos de resultadoGpt para o novo mapa
-    };
 
-    if (novoMapa != null) {
-      await sheet?.values.map.appendRow(novoMapa);
+    print("retorno do GPT");
+    print(resultadoGpt);
+
+    if (resultadoGpt != null) {
+      List<String> listaConvertida = List<String>.from(resultadoGpt.keys);
+      await sheet?.values.insertRow(1, listaConvertida);
+      await sheet?.values.map.appendRow(resultadoGpt);
     }
-    List<String>? colunaDeIds = await sheet?.values.columnByKey('Data');
-    if (colunaDeIds != null) {
+    String? colunaDeIds = await sheet?.values.value(column: 1, row: 1);
+    print(colunaDeIds);
+    if (colunaDeIds != "") {
       print('Dados inseridos com sucesso na planilha.');
       return error;
     }
