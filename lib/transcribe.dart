@@ -60,46 +60,39 @@ class _TranscribeState extends State<Transcribe> {
 
   Future<int> main_service(String texto) async {
     int error = 0;
-    print("comecando gpt...");
     final gsheets = GSheets(credentials);
     //final ss = await gsheets.spreadsheet(spreadsheetId);
     var sheet = null;
     var sheetDeletar = null;
     final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
-    DateTime data2 = DateTime.now();
-    String newData2 = data2.toString();
-    newData2 = newData2.substring(0, 19);
+    DateTime data = DateTime.now();
+    String newData = data.toString();
+    newData = newData.substring(0, 19);
     try {
       if (pacient.hasInserted == false) {
-        await ss.addWorksheet("Consulta " + newData2);
-        sheet = ss.worksheetByTitle("Consulta " + newData2);
-        sheetDeletar = ss.worksheetByTitle("Página1");
-        ss.deleteWorksheet(sheetDeletar);
+        await ss.addWorksheet("Consulta " + newData);
+        sheet = ss.worksheetByTitle("Consulta " + newData);
+        try{
+          sheetDeletar = ss.worksheetByTitle("Página1");
+          ss.deleteWorksheet(sheetDeletar);
+        }
+        catch(_){}
         pacient.hasInserted = true;
       }
       else {
         //criar nova aba
-        await ss.addWorksheet("Consulta " + newData2);
-        sheet = ss.worksheetByTitle("Consulta " + newData2);
+        await ss.addWorksheet("Consulta " + newData);
+        sheet = ss.worksheetByTitle("Consulta " + newData);
       }
     }
     on Exception catch (_) {
       error = 1;
       return error;
     }
-    //var camposAntigos = await sheet?.values.row(1);
-    final campos = this.campos;
     var camposNovo;
-    /*if (camposAntigos != null){
-      camposNovo = List.from(camposAntigos)..addAll(campos);
-      camposNovo = List.from(['Data'])..addAll(camposNovo);
-      camposNovo = camposNovo.toSet().toList();
-    }*/
-    camposNovo = List.from(['Id', 'Data'])
-      ..addAll(campos);
+    camposNovo = List.from(['Data']) ..addAll(this.campos);
     await sheet?.values.insertRow(1, camposNovo);
 
-    //final campos = await sheet?.values.row(1);
     OpenAI.apiKey = apiSecretKey;
     final prompt = '''
     Você vai ler um relato de um fisioterapeuta após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $campos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:
@@ -118,46 +111,27 @@ class _TranscribeState extends State<Transcribe> {
       error = 2;
       return error;
     }
-    DateTime data = DateTime.now();
-    String newData = data.toString();
-    newData = newData.substring(0, 19);
     var resultadoGpt = json.decode(
         chatCompletion.choices.first.message.content);
     // Inserir na planilha:
-    print(resultadoGpt);
-    var colunaIds = await sheet?.values.columnByKey('Id');
-    int novoId = colunaIds.length + 1;
     Map<String, dynamic> novoMapa = {
-      "Id": novoId,
       "Data": newData,
-      // Substitua pela sua data real
       ...resultadoGpt,
       // Isso copiará todos os campos de resultadoGpt para o novo mapa
     };
 
-    print(novoMapa);
-    print(newData);
-    // convertendo para numerico ao verificar existencia da data
-
     if (novoMapa != null) {
       await sheet?.values.map.appendRow(novoMapa);
     }
-    List<String>? colunaDeIds = await sheet?.values.columnByKey('Id');
-    List<int> listaDeInteiros = [];
-    print(colunaDeIds);
+    List<String>? colunaDeIds = await sheet?.values.columnByKey('Data');
     if (colunaDeIds != null) {
-      listaDeInteiros = colunaDeIds.map((string) => int.parse(string)).toList();
+      print('Dados inseridos com sucesso na planilha.');
+      return error;
     }
-
-    // Verifica se a ID está presente na planilha.
-    if (listaDeInteiros != []){
-      if (listaDeInteiros.contains(novoId) != true) {
-        error = 3;
-        return error;
-      }
+    else{
+      error = 3;
+      return error;
     }
-    print('Dados inseridos com sucesso na planilha.');
-    return error;
   }
 
   @override
