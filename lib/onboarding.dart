@@ -8,7 +8,7 @@ import 'record.dart';
 
 // OnBoarding content Model
 class OnBoard {
-  final String image = "assets/logoanotai.svg", title, description;
+  final String image = "assets/logon.png", title, description;
 
   OnBoard({
     required this.title,
@@ -19,24 +19,24 @@ class OnBoard {
 // OnBoarding content list
 final List<OnBoard> demoData = [
   OnBoard(
-    title: "Title 01",
+    title: "Você fala, nós anotamos!",
     description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Passo 1: Clique para iniciar a gravação e escolha o modelo de preenchimento adequado.",
   ),
   OnBoard(
-    title: "Title 02",
+    title: "Confira as informações!",
     description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Passo 2: Escute o áudio e revise os dados coletados, após isso, é só submeter seu relatório para a planilha de armazenamento.",
   ),
   OnBoard(
-    title: "Title 03",
+    title: "Tudo certo!",
     description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Passo 3: Acesse os relatórios preenchidos e organizados na sua planilha de armazenamento. Você também pode acessar pela lista de pacientes salvos!",
   ),
   OnBoard(
-    title: "Title 04",
+    title: "Escolha onde armazenar os dados!",
     description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
+        "Antes de começar, informe o link da planilha base onde serão armazenados seus relatórios.",
   ),
 ];
 
@@ -60,7 +60,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
     // Initialize page controller
     _pageController = PageController(initialPage: 0);
     // Automatic scroll behaviour
-    _timer = Timer.periodic(const Duration(seconds: 5), (Timer timer) {
+    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
       if (_pageIndex < 3) {
         _pageIndex++;
       } else {
@@ -195,8 +195,7 @@ class OnBoardContent extends StatelessWidget {
     return Column(
       children: [
         const Spacer(),
-        SvgPicture.asset('assets/logoanotai.svg',
-            semanticsLabel: 'Logo', color: Color.fromRGBO(255, 255, 255, 1)),
+        Image.asset('assets/logon.png'),
         const Spacer(),
         Text(
           title,
