@@ -26,7 +26,7 @@ final List<OnBoard> demoData = [
   OnBoard(
     title: "Confira as informações!",
     description:
-        "Passo 2: Escute o áudio e revise os dados coletados, após isso, é só submeter seu relatório para a planilha de armazenamento.",
+        "Passo 2: Grave o áudio e revise os dados coletados, após isso, é só submeter seu relatório para a planilha de armazenamento.",
   ),
   OnBoard(
     title: "Tudo certo!",
@@ -36,7 +36,7 @@ final List<OnBoard> demoData = [
   OnBoard(
     title: "Escolha onde armazenar os dados!",
     description:
-        "Antes de começar, informe o link da planilha base onde serão armazenados seus relatórios.",
+        "Antes de começar, lembre-se de criar o primeiro paciente, com o link da planilha do Google Sheets e o seu primeiro modelo de preenchimento!",
   ),
 ];
 

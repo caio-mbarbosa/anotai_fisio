@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import "record.dart";
+import 'onboarding.dart';
 
 class Start extends StatelessWidget {
   @override
@@ -46,7 +46,7 @@ class Start extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Recording()),
+                          MaterialPageRoute(builder: (context) => OnBoardingScreen()),
                         );
                       },
                       style: ElevatedButton.styleFrom(

@@ -24,8 +24,7 @@ class End extends StatelessWidget {
     double svgSize = 300;
     double screenPadding = 15;
     double rowGap = 20;
-    final Uri _url = Uri.parse(
-        'https://docs.google.com/spreadsheets/d/' + pacient_link_sheets!);
+    final Uri _url = Uri.parse(pacient_link_sheets!);
     return Scaffold(
       body: Container(
           padding: EdgeInsets.fromLTRB(screenPadding * fem, screenPadding * fem,

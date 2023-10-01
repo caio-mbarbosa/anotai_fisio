@@ -20,4 +20,14 @@ class Pacient{
     required this.link_sheets,
     required this.hasInserted
   });
+
+  Map<String, dynamic> toJson(){
+    return{
+      "id": this.id,
+      "name": this.name,
+      "age": this.age,
+      "sex": this.sex,
+      "link_sheets": this.link_sheets,
+      "hasInserted": this.hasInserted};
+    }
 }

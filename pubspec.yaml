@@ -78,6 +78,8 @@ flutter:
     - assets/logoanotfisio.svg
     - assets/logoanotai.svg
     - assets/logo.png
+    - assets/dummy_pacients.json
+    - assets/logon.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

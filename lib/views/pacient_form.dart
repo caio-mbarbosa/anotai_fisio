@@ -134,9 +134,7 @@ class PacientForm extends StatelessWidget {
                 const SizedBox(height: 80),
                 InkWell(
                   onTap: () {
-                    final Uri _url = Uri.parse(
-                        'https://docs.google.com/spreadsheets/d/' +
-                            _formData['link_sheets']!);
+                    final Uri _url = Uri.parse(_formData['link_sheets']!);
                     print("Button clicked!");
                     launchUrl(_url);
                   },

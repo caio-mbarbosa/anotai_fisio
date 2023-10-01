@@ -13,6 +13,26 @@ import 'package:gsheets/gsheets.dart';
 import 'package:dart_openai/dart_openai.dart';
 import 'package:googleapis_auth/auth_io.dart';
 
+String extractSpreadsheetCodeFromUrl(String url) {
+  // Padrão de expressão regular para encontrar o código da planilha na URL
+  final regex = RegExp(r"/spreadsheets/d/([a-zA-Z0-9-_]+)");
+
+  // Procurar correspondências na URL
+  final match = regex.firstMatch(url);
+
+  if (match != null && match.groupCount >= 1) {
+    // O código da planilha estará na primeira captura (grupo 1) da correspondência
+    final spreadsheetCode = match.group(1);
+    if(spreadsheetCode != null){
+      return spreadsheetCode;
+    }
+    return '';
+  } else {
+    // Se não encontrar correspondências, retorne null ou uma string vazia, dependendo do que você preferir
+    return '';
+  }
+}
+
 class Transcribe extends StatefulWidget {
   final String? audioPath;
   final Pacient pacient;
@@ -64,7 +84,7 @@ class _TranscribeState extends State<Transcribe> {
     //final ss = await gsheets.spreadsheet(spreadsheetId);
     var sheet = null;
     var sheetDeletar = null;
-    final ss = await gsheets.spreadsheet(this.pacient.link_sheets);
+    final ss = await gsheets.spreadsheet(extractSpreadsheetCodeFromUrl(this.pacient.link_sheets));
     DateTime data = DateTime.now();
     String newData = data.toString();
     newData = newData.substring(0, 19);
