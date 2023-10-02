@@ -51,11 +51,11 @@ class PacientForm extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Formulario paciente'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xff552a7f),
       ),
       floatingActionButton: FloatingActionButton(
         child: Icon(Icons.save),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xff552a7f),
         onPressed: () {
           final isValid = _form.currentState?.validate();
 
@@ -132,33 +132,35 @@ class PacientForm extends StatelessWidget {
                       _formData['link_sheets'] = value.toString();
                     }),
                 const SizedBox(height: 80),
-                InkWell(
-                  onTap: () {
-                    final Uri _url = Uri.parse(_formData['link_sheets']!);
-                    print("Button clicked!");
-                    launchUrl(_url);
-                  },
-                  child: Container(
-                    width: 220,
-                    padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
-                    decoration: BoxDecoration(
-                      color: Color(0xff552a7f),
-                      borderRadius: BorderRadius.circular(20),
-                    ),
-                    child: Center(
-                      child: Text(
-                        "Abrir planilha",
-                        style: GoogleFonts.roboto(
-                          fontSize: 20 * ffem,
-                          fontWeight: FontWeight.w500,
-                          height: 1.4285714286 * ffem / fem,
-                          letterSpacing: 0.1000000015 * fem,
-                          color: Colors.white,
+                _formData['link_sheets'] != null
+                    ? InkWell(
+                        onTap: () {
+                          final Uri _url = Uri.parse(_formData['link_sheets']!);
+                          print("Button clicked!");
+                          launchUrl(_url);
+                        },
+                        child: Container(
+                          width: 220,
+                          padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                          decoration: BoxDecoration(
+                            color: Color(0xff552a7f),
+                            borderRadius: BorderRadius.circular(20),
+                          ),
+                          child: Center(
+                            child: Text(
+                              "Abrir planilha",
+                              style: GoogleFonts.roboto(
+                                fontSize: 20 * ffem,
+                                fontWeight: FontWeight.w500,
+                                height: 1.4285714286 * ffem / fem,
+                                letterSpacing: 0.1000000015 * fem,
+                                color: Colors.white,
+                              ),
+                            ),
+                          ),
                         ),
-                      ),
-                    ),
-                  ),
-                ),
+                      )
+                    : const SizedBox(height: 1),
               ],
             )),
       ),

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:anotai_fisio/models/prontuario.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 class Templates extends StatefulWidget {
@@ -62,54 +63,55 @@ class _ModelosScreenState extends State<Templates> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Modelos'),
-        backgroundColor: Color(0xff764abc),
-      ),
-      body: ListView.builder(
-        itemCount: modelos.length,
-        itemBuilder: (context, index) {
-          return Card(
-            elevation: 2.0,
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
-            child: ListTile(
-              onTap: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => EditScreen(modelo: modelos[index]),
+    return FractionallySizedBox(
+        heightFactor: .4,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView.builder(
+            itemCount: modelos.length,
+            itemBuilder: (context, index) {
+              return Card(
+                elevation: 2.0,
+                margin:
+                    const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+                child: ListTile(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) =>
+                            EditScreen(modelo: modelos[index]),
+                      ),
+                    );
+                  },
+                  title: Text(modelos[index].nome),
+                  trailing: IconButton(
+                    icon: Icon(Icons.delete),
+                    onPressed: () {
+                      removerModelo(index);
+                    },
                   ),
-                );
-              },
-              title: Text(modelos[index].nome),
-              trailing: IconButton(
-                icon: Icon(Icons.delete),
-                onPressed: () {
-                  removerModelo(index);
-                },
-              ),
-            ),
-          );
-        },
-      ),
-      floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff764abc),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => NovoModeloScreen(),
-            ),
-          ).then((novoModelo) {
-            if (novoModelo != null) {
-              salvarModelo(novoModelo);
-            }
-          });
-        },
-        child: Icon(Icons.add),
-      ),
-    );
+                ),
+              );
+            },
+          ),
+          floatingActionButton: FloatingActionButton(
+            backgroundColor: Color(0xff552a7f),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => NovoModeloScreen(),
+                ),
+              ).then((novoModelo) {
+                if (novoModelo != null) {
+                  salvarModelo(novoModelo);
+                }
+              });
+            },
+            child: Icon(Icons.add),
+          ),
+        ));
   }
 }
 
@@ -155,45 +157,56 @@ class _EditScreenState extends State<EditScreen> {
 
   @override
   Widget build(BuildContext context) {
+    double fem = .9;
+    double ffem = 1;
     return Scaffold(
       appBar: AppBar(
-        title: Text('Editar Modelo: ${widget.modelo.nome}'),
-        backgroundColor: Color(0xff764abc),
+        title: Text('${widget.modelo.nome}'),
+        backgroundColor: Color(0xff552a7f),
       ),
+      backgroundColor: Colors.white,
       body: Column(
-        crossAxisAlignment: CrossAxisAlignment.stretch,
         children: <Widget>[
           Expanded(
             child: ListView.builder(
               itemCount: campos.length,
               itemBuilder: (context, index) {
-                return Column(
-                  children: [
-                    SizedBox(height: 10.0),
-                    Text(
-                      'Campo ${index + 1}',
-                      style: TextStyle(
-                        fontSize: 18.0,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    ListTile(
-                      title: Text(campos[index]),
-                    ),
-                    Divider(
-                      thickness: 1.0,
-                      color: Colors.grey,
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        IconButton(
-                          icon: Icon(Icons.delete),
-                          onPressed: () {
-                            removerCampo(index);
-                          },
+                return Stack(
+                  children: <Widget>[
+                    Container(
+                        width: double.infinity,
+                        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        padding: EdgeInsets.all(20),
+                        decoration: BoxDecoration(
+                          border: Border.all(color: Colors.grey, width: 1),
+                          borderRadius: BorderRadius.circular(5),
+                          shape: BoxShape.rectangle,
                         ),
-                      ],
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            Text(campos[index]),
+                            IconButton(
+                              icon: Icon(Icons.delete),
+                              onPressed: () {
+                                removerCampo(index);
+                              },
+                            ),
+                          ],
+                        )),
+                    Center(
+                      child: Container(
+                        padding: EdgeInsets.all(10),
+                        color: Colors.white,
+                        child: Text(
+                          'Campo ${index + 1}',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
                     ),
                   ],
                 );
@@ -201,46 +214,68 @@ class _EditScreenState extends State<EditScreen> {
             ),
           ),
           Padding(
-            padding: const EdgeInsets.all(8.0),
+            padding: const EdgeInsets.all(30.0),
             child: Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                IconButton(
-                  icon: Icon(Icons.check_box),
-                  color: Color(0xff764abc),
-                  onPressed: () {
-                    Navigator.of(context).pop();
-                    Navigator.of(context).pop(widget.modelo);
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.add),
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => NovoCampoScreen(),
-                      ),
-                    ).then((novoCampo) {
-                      if (novoCampo != null) {
-                        setState(() {
-                          campoCount++;
-                          campos.add(novoCampo);
+                Container(
+                    width: 48 * fem,
+                    height: 48 * fem,
+                    alignment: Alignment.center,
+                    decoration: ShapeDecoration(
+                        shape: CircleBorder(eccentricity: 1),
+                        color: const Color.fromARGB(255, 213, 213, 213)),
+                    child: IconButton.filled(
+                      iconSize: 25,
+                      alignment: Alignment.center,
+                      icon: Icon(Icons.add),
+                      color: const Color.fromARGB(255, 90, 90, 90),
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) => NovoCampoScreen(),
+                          ),
+                        ).then((novoCampo) {
+                          if (novoCampo != null) {
+                            setState(() {
+                              campoCount++;
+                              campos.add(novoCampo);
+                            });
+                          }
                         });
-                      }
-                    });
-                  },
-                ),
-                IconButton(
-                  icon: Icon(Icons.save),
-                  color: Color(0xff764abc),
-                  onPressed: () {
-                    salvarCampos();
-                    Navigator.pop(context);
-                  },
-                ),
+                        salvarCampos();
+                      },
+                    )),
               ],
             ),
+          ),
+          InkWell(
+            child: Container(
+              width: 220,
+              padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+              margin: const EdgeInsets.only(bottom: 48),
+              decoration: BoxDecoration(
+                color: Color(0xff552a7f),
+                borderRadius: BorderRadius.circular(20),
+              ),
+              child: Center(
+                child: Text(
+                  "Confirmar Campos",
+                  style: GoogleFonts.roboto(
+                    fontSize: 20 * ffem,
+                    fontWeight: FontWeight.w500,
+                    height: 1.4285714286 * ffem / fem,
+                    letterSpacing: 0.1000000015 * fem,
+                    color: Colors.white,
+                  ),
+                ),
+              ),
+            ),
+            onTap: () {
+              Navigator.of(context).pop();
+              Navigator.of(context).pop(widget.modelo);
+            },
           ),
         ],
       ),
@@ -256,7 +291,7 @@ class NovoModeloScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Novo Modelo'),
-        backgroundColor: Color(0xff764abc),
+        backgroundColor: Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -279,13 +314,19 @@ class NovoModeloScreen extends StatelessWidget {
             SizedBox(height: 16.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff764abc),
+                backgroundColor: Color(0xff552a7f),
               ),
               onPressed: () {
                 String nomeModelo = _modeloController.text;
                 if (nomeModelo.isNotEmpty) {
                   Modelo novoModelo = Modelo(nome: nomeModelo, campos: []);
                   Navigator.pop(context, novoModelo);
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                      builder: (context) => EditScreen(modelo: novoModelo),
+                    ),
+                  );
                 }
               },
               child: Text('Adicionar Modelo'),
@@ -305,7 +346,7 @@ class NovoCampoScreen extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Novo Campo'),
-        backgroundColor: Color(0xff764abc),
+        backgroundColor: Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -332,7 +373,7 @@ class NovoCampoScreen extends StatelessWidget {
                 Navigator.pop(context, novoCampo);
               },
               style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xff764abc)),
+                  ElevatedButton.styleFrom(backgroundColor: Color(0xff552a7f)),
               child: Text('Adicionar Campo'),
             ),
           ],

@@ -9,26 +9,25 @@ class Pacientes extends StatelessWidget {
   Widget build(BuildContext context) {
     final Pacients pacients = Provider.of(context);
 
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Selecione o paciente'),
-        backgroundColor: Colors.deepPurple,
-      ),
-      body: ListView.builder(
-        itemCount: pacients.count,
-        itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
-      ),
-      floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
-        onPressed: () {
-          Navigator.push(
-            context,
-            MaterialPageRoute(builder: (context) => PacientForm(id: '')),
-          );
-        },
-        backgroundColor: Colors.deepPurple,
-      ),
-    );
+    return FractionallySizedBox(
+        heightFactor: .4,
+        child: Scaffold(
+          backgroundColor: Colors.white,
+          body: ListView.builder(
+            itemCount: pacients.count,
+            itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
+          ),
+          floatingActionButton: FloatingActionButton(
+            child: Icon(Icons.add),
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => PacientForm(id: '')),
+              );
+            },
+            backgroundColor: Color(0xff552a7f),
+          ),
+        ));
   }
 }
 
@@ -44,16 +43,19 @@ class PacientTile extends StatelessWidget {
         Icons.person,
         color: Colors.white70,
       ),
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Color(0xff552a7f),
     );
-    return InkWell(
-      onTap: () {
-        Navigator.of(context).pop(pacient);
-      },
-      child: ListTile(
-        leading: avatar,
-        title: Text(pacient.name),
-      ),
-    );
+    return Card(
+        elevation: 2.0,
+        margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+        child: InkWell(
+          onTap: () {
+            Navigator.of(context).pop(pacient);
+          },
+          child: ListTile(
+            leading: avatar,
+            title: Text(pacient.name),
+          ),
+        ));
   }
 }

@@ -70,7 +70,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
       final Modelo? template;
       template = await openTemplatePopUp();
       print(template);
-
+      if (template == null) {
+        return;
+      }
       setState(() => modelo = template);
 
       if (await _audioRecorder.hasPermission()) {
@@ -99,7 +101,11 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   Future<void> _stop(template) async {
     final Pacient? paciente;
-    paciente = await openPacientePopUp();
+    if (template != null) {
+      paciente = await openPacientePopUp();
+    } else {
+      paciente = null;
+    }
     print(paciente);
 
     _timer?.cancel();
@@ -142,6 +148,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
                       Container(
                           width: 48 * fem,
                           height: 48 * fem,
+                          margin: EdgeInsets.only(bottom: 4),
                           decoration: ShapeDecoration(
                               shape: CircleBorder(eccentricity: 1),
                               color: Colors.white),
@@ -185,6 +192,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
                       Container(
                           width: 48 * fem,
                           height: 48 * fem,
+                          margin: EdgeInsets.only(bottom: 4),
                           decoration: ShapeDecoration(
                               shape: CircleBorder(eccentricity: 1),
                               color: Colors.white),
@@ -224,7 +232,9 @@ class _AudioRecorderState extends State<AudioRecorder> {
           SizedBox(height: rowGap),
           SizedBox(height: rowGap),
           IconButton(
-              onPressed: () {},
+              onPressed: () {
+                _stop(null);
+              },
               icon: Icon(Icons.close, color: Color(0xFF000000))),
           _buildTimer(),
           _buildStartControl(),
@@ -446,7 +456,7 @@ class _RecordingState extends State<Recording> {
                 centerTitle: true,
                 title: Text('Conferir informações'),
                 //titleTextStyle: TextStyle(color: Colors.black),
-                backgroundColor: const Color(0xff764abc),
+                backgroundColor: const Color(0xff552a7f),
               )
             : null,
         body: Container(

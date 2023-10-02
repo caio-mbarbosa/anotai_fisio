@@ -39,7 +39,7 @@ class MyApp extends StatelessWidget {
                 title: const Text(
                   'Home',
                 ),
-                backgroundColor: const Color(0xff764abc),
+                backgroundColor: const Color(0xff552a7f),
               )
             : null,
         drawer: kDebugMode
@@ -50,7 +50,7 @@ class MyApp extends StatelessWidget {
                   children: [
                     const DrawerHeader(
                       decoration: BoxDecoration(
-                        color: const Color(0xff764abc),
+                        color: const Color(0xff552a7f),
                       ),
                       child: Text('Menu'),
                     ),

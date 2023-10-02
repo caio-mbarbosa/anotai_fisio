@@ -3,12 +3,11 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:record/record.dart';
 import 'record.dart';
 
 // OnBoarding content Model
 class OnBoard {
-  final String image = "assets/logon.png", title, description;
+  final String image = "assets/logo.png", title, description;
 
   OnBoard({
     required this.title,
@@ -26,7 +25,7 @@ final List<OnBoard> demoData = [
   OnBoard(
     title: "Confira as informações!",
     description:
-        "Passo 2: Grave o áudio e revise os dados coletados, após isso, é só submeter seu relatório para a planilha de armazenamento.",
+        "Passo 2: Grave o áudio, escolha o paciente e revise os dados coletados, após isso, é só submeter seu relatório para a planilha de armazenamento.",
   ),
   OnBoard(
     title: "Tudo certo!",
@@ -34,9 +33,14 @@ final List<OnBoard> demoData = [
         "Passo 3: Acesse os relatórios preenchidos e organizados na sua planilha de armazenamento. Você também pode acessar pela lista de pacientes salvos!",
   ),
   OnBoard(
-    title: "Escolha onde armazenar os dados!",
+    title: "Crie o modelo e o paciente!",
     description:
-        "Antes de começar, lembre-se de criar o primeiro paciente, com o link da planilha do Google Sheets e o seu primeiro modelo de preenchimento!",
+        "Antes de começar, lembre-se de criar o seu primeiro modelo de preenchimento e primeiro o paciente!",
+  ),
+  OnBoard(
+    title: "Disponibilize uma planilha Google Sheets!",
+    description:
+        "Para essa demo, precisamos que seja disponibilizada, para cada paciente, uma planilha aberta para edição de qualquer pessoa com o link",
   ),
 ];
 
@@ -52,34 +56,18 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
   // Variables
   late PageController _pageController;
   int _pageIndex = 0;
-  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
     // Initialize page controller
     _pageController = PageController(initialPage: 0);
-    // Automatic scroll behaviour
-    _timer = Timer.periodic(const Duration(seconds: 10), (Timer timer) {
-      if (_pageIndex < 3) {
-        _pageIndex++;
-      } else {
-        _pageIndex = 0;
-      }
-
-      _pageController.animateToPage(
-        _pageIndex,
-        duration: const Duration(milliseconds: 350),
-        curve: Curves.easeIn,
-      );
-    });
   }
 
   @override
   void dispose() {
     // Dispose everything
     _pageController.dispose();
-    _timer!.cancel();
     super.dispose();
   }
 
@@ -136,7 +124,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
               height: 16,
             ),
             // Button area
-            (_pageIndex == 3)
+            (_pageIndex == demoData.length - 1)
                 ? InkWell(
                     onTap: () {
                       print("Button clicked!");
@@ -167,9 +155,30 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       ),
                     ),
                   )
-                : const SizedBox(
-                    height: 88,
-                  ),
+                : InkWell(
+                    onTap: () {},
+                    child: Container(
+                      width: 220,
+                      padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
+                      margin: const EdgeInsets.only(bottom: 48),
+                      decoration: BoxDecoration(
+                        color: Color.fromARGB(0, 0, 0, 0),
+                        borderRadius: BorderRadius.circular(20),
+                      ),
+                      child: Center(
+                        child: Text(
+                          "Finalizar",
+                          style: GoogleFonts.roboto(
+                            fontSize: 20 * ffem,
+                            fontWeight: FontWeight.w500,
+                            height: 1.4285714286 * ffem / fem,
+                            letterSpacing: 0.1000000015 * fem,
+                            color: Color.fromARGB(0, 0, 0, 0),
+                          ),
+                        ),
+                      ),
+                    ),
+                  )
           ],
         ),
       ),
@@ -195,10 +204,11 @@ class OnBoardContent extends StatelessWidget {
     return Column(
       children: [
         const Spacer(),
-        Image.asset('assets/logon.png'),
+        Image.asset(image),
         const Spacer(),
         Text(
           title,
+          textAlign: TextAlign.center,
           style: const TextStyle(
             color: Colors.white,
             fontSize: 20,
@@ -235,10 +245,9 @@ class DotIndicator extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 300),
+    return Container(
       height: 8,
-      width: isActive ? 24 : 8,
+      width: 8,
       decoration: BoxDecoration(
         color: isActive ? Color(0xff21005D) : Colors.white,
         border: isActive ? null : Border.all(color: Color(0xff21005D)),

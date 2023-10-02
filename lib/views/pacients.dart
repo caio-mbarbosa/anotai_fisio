@@ -18,7 +18,7 @@ class PacientsList extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text('Selecione o paciente'),
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xff552a7f),
       ),
       body: ListView.builder(
         itemCount: pacients.count,
@@ -32,7 +32,7 @@ class PacientsList extends StatelessWidget {
             MaterialPageRoute(builder: (context) => PacientForm(id: '')),
           );
         },
-        backgroundColor: Colors.deepPurple,
+        backgroundColor: Color(0xff552a7f),
       ),
     );
   }
@@ -50,7 +50,7 @@ class PacientTile extends StatelessWidget {
         Icons.person,
         color: Colors.white70,
       ),
-      backgroundColor: Colors.deepPurple,
+      backgroundColor: Color(0xff552a7f),
     );
     return InkWell(
       onTap: () {},
