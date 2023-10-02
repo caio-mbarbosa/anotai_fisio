@@ -2,7 +2,7 @@
         <uses-permission android:name="android.permission.RECORD_AUDIO" />
         <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <application
-        android:label="anotai_fisio"
+        android:label="Anotai"
         android:name="${applicationName}"
         android:icon="@mipmap/ic_launcher">
         <activity

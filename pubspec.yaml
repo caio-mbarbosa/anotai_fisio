@@ -66,12 +66,13 @@ dev_dependencies:
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
 
-flutter_icons:
-  android: "launcher_icon"
+flutter_launcher_icons:
+  android: true
   ios: false
-  image_path: "assets/icon/icon.png"
-  adaptive_icon_background: "assets/logo-background.png"
-  adaptive_icon_foreground: "assets/logo.png"
+  image_path: "assets/logo_foreground.png"
+  adaptive_icon_background: "#552a7f"
+  adaptive_icon_foreground: "assets/logo_foreground.png"
+  min_sdk_android: 21
 
 # The following section is specific to Flutter packages.
 flutter:
@@ -89,6 +90,7 @@ flutter:
     - assets/dummy_pacients.json
     - assets/logon.png
     - assets/logo-background.png
+    - assets/logo_foreground.png
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -227,8 +227,22 @@ class _EditScreenState extends State<EditScreen> {
           Padding(
             padding: const EdgeInsets.all(15.0),
             child: Row(
-              mainAxisAlignment: MainAxisAlignment.end,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                Container(
+                    width: 66 * fem,
+                    height: 66 * fem,
+                    decoration: ShapeDecoration(
+                        shape: CircleBorder(eccentricity: 1),
+                        color: Color(0xff552a7f)),
+                    child: IconButton.filled(
+                      icon: Icon(Icons.save),
+                      color: Colors.white,
+                      onPressed: () {
+                        salvarCampos();
+                        Navigator.of(context).pop();
+                      },
+                    )),
                 Container(
                     width: 66 * fem,
                     height: 66 * fem,
