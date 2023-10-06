@@ -92,10 +92,10 @@ class AudioPlayerState extends State<AudioPlayer> {
 
     if (_audioPlayer.state == ap.PlayerState.playing) {
       icon = const Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
-      color = Color(0xFFFFFFFF);
+      color = const Color(0xFFFFFFFF);
     } else {
       icon = const Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
-      color = Color(0xFFFFFFFF);
+      color = const Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -132,8 +132,8 @@ class AudioPlayerState extends State<AudioPlayer> {
     return SizedBox(
       width: width,
       child: Slider(
-        activeColor: Color(0xff552a7f),
-        inactiveColor: Color(0x50552a7f),
+        activeColor: const Color(0xff552a7f),
+        inactiveColor: const Color(0x50552a7f),
         onChanged: (v) {
           if (duration != null) {
             final position = v * duration.inMilliseconds;

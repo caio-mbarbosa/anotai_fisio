@@ -5,6 +5,8 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class Pacientes extends StatelessWidget {
+  const Pacientes({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Pacients pacients = Provider.of(context);
@@ -18,14 +20,14 @@ class Pacientes extends StatelessWidget {
             itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
           ),
           floatingActionButton: FloatingActionButton(
-            child: Icon(Icons.add),
             onPressed: () {
               Navigator.push(
                 context,
                 MaterialPageRoute(builder: (context) => PacientForm(id: '')),
               );
             },
-            backgroundColor: Color(0xff552a7f),
+            backgroundColor: const Color(0xff552a7f),
+            child: const Icon(Icons.add),
           ),
         ));
   }
@@ -34,16 +36,16 @@ class Pacientes extends StatelessWidget {
 class PacientTile extends StatelessWidget {
   final Pacient pacient;
 
-  const PacientTile(this.pacient);
+  const PacientTile(this.pacient, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final avatar = CircleAvatar(
+    const avatar = CircleAvatar(
+      backgroundColor: Color(0xff552a7f),
       child: Icon(
         Icons.person,
         color: Colors.white70,
       ),
-      backgroundColor: Color(0xff552a7f),
     );
     return Card(
         elevation: 2.0,

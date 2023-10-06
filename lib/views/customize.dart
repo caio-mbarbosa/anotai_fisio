@@ -1,18 +1,13 @@
-import 'dart:ffi';
-import 'package:anotai_fisio/models/pacient.dart';
-import 'package:anotai_fisio/record.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:anotai_fisio/models/prontuario.dart';
-import 'package:anotai_fisio/transcribe.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'dart:convert';
 
 class CustomizeView extends StatefulWidget {
   @override
   _ModelosScreenState createState() => _ModelosScreenState();
 
-  CustomizeView();
+  const CustomizeView({super.key});
 }
 
 class _ModelosScreenState extends State<CustomizeView> {
@@ -69,15 +64,15 @@ class _ModelosScreenState extends State<CustomizeView> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Modelos'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Modelos'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: ListView.builder(
         itemCount: modelos.length,
         itemBuilder: (context, index) {
           return Card(
             elevation: 2.0,
-            margin: EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
+            margin: const EdgeInsets.symmetric(vertical: 8.0, horizontal: 16.0),
             child: ListTile(
               onTap: () {
                 Navigator.push(
@@ -89,7 +84,7 @@ class _ModelosScreenState extends State<CustomizeView> {
               },
               title: Text(modelos[index].nome),
               trailing: IconButton(
-                icon: Icon(Icons.delete),
+                icon: const Icon(Icons.delete),
                 onPressed: () {
                   removerModelo(index);
                 },
@@ -99,7 +94,7 @@ class _ModelosScreenState extends State<CustomizeView> {
         },
       ),
       floatingActionButton: FloatingActionButton(
-        backgroundColor: Color(0xff552a7f),
+        backgroundColor: const Color(0xff552a7f),
         onPressed: () {
           Navigator.push(
             context,
@@ -112,7 +107,7 @@ class _ModelosScreenState extends State<CustomizeView> {
             }
           });
         },
-        child: Icon(Icons.add),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -121,7 +116,7 @@ class _ModelosScreenState extends State<CustomizeView> {
 class EditScreen extends StatefulWidget {
   final Modelo modelo;
 
-  EditScreen({required this.modelo});
+  const EditScreen({super.key, required this.modelo});
 
   @override
   _EditScreenState createState() => _EditScreenState();
@@ -164,13 +159,13 @@ class _EditScreenState extends State<EditScreen> {
     double fem = .9;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.modelo.nome}'),
-        backgroundColor: Color(0xff552a7f),
+        title: Text(widget.modelo.nome),
+        backgroundColor: const Color(0xff552a7f),
       ),
       backgroundColor: Colors.white,
       body: Column(
         children: <Widget>[
-          Padding(
+          const Padding(
               padding: EdgeInsets.all(12),
               child: Text("Campos",
                   style: TextStyle(
@@ -186,8 +181,8 @@ class _EditScreenState extends State<EditScreen> {
                   children: <Widget>[
                     Container(
                         width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                        padding: EdgeInsets.all(20),
+                        margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey, width: 1),
                           borderRadius: BorderRadius.circular(5),
@@ -198,7 +193,7 @@ class _EditScreenState extends State<EditScreen> {
                           children: [
                             Text(campos[index]),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 removerCampo(index);
                               },
@@ -207,11 +202,11 @@ class _EditScreenState extends State<EditScreen> {
                         )),
                     Center(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         color: Colors.white,
                         child: Text(
                           'Campo ${index + 1}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -232,11 +227,11 @@ class _EditScreenState extends State<EditScreen> {
                 Container(
                     width: 66 * fem,
                     height: 66 * fem,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                         shape: CircleBorder(eccentricity: 1),
                         color: Color(0xff552a7f)),
                     child: IconButton.filled(
-                      icon: Icon(Icons.save),
+                      icon: const Icon(Icons.save),
                       color: Colors.white,
                       onPressed: () {
                         salvarCampos();
@@ -246,11 +241,11 @@ class _EditScreenState extends State<EditScreen> {
                 Container(
                     width: 66 * fem,
                     height: 66 * fem,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                         shape: CircleBorder(eccentricity: 1),
                         color: Color(0xff552a7f)),
                     child: IconButton.filled(
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       color: Colors.white,
                       onPressed: () {
                         Navigator.push(
@@ -281,35 +276,37 @@ class _EditScreenState extends State<EditScreen> {
 class NovoModeloScreen extends StatelessWidget {
   final TextEditingController _modeloController = TextEditingController();
 
+  NovoModeloScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Novo Modelo'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Novo Modelo'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Novo Modelo',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _modeloController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nome do Modelo',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff552a7f),
+                backgroundColor: const Color(0xff552a7f),
               ),
               onPressed: () {
                 String nomeModelo = _modeloController.text;
@@ -324,7 +321,7 @@ class NovoModeloScreen extends StatelessWidget {
                   );
                 }
               },
-              child: Text('Adicionar Modelo'),
+              child: const Text('Adicionar Modelo'),
             ),
           ],
         ),
@@ -336,40 +333,42 @@ class NovoModeloScreen extends StatelessWidget {
 class NovoCampoScreen extends StatelessWidget {
   final TextEditingController _campoController = TextEditingController();
 
+  NovoCampoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Novo Campo'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Novo Campo'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Novo Campo',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _campoController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nome do Campo',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 String novoCampo = _campoController.text;
                 Navigator.pop(context, novoCampo);
               },
               style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xff552a7f)),
-              child: Text('Adicionar Campo'),
+                  ElevatedButton.styleFrom(backgroundColor: const Color(0xff552a7f)),
+              child: const Text('Adicionar Campo'),
             ),
           ],
         ),

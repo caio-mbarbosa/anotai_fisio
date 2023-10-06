@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 
 class Pacient{
   final String id;
@@ -23,11 +22,11 @@ class Pacient{
 
   Map<String, dynamic> toJson(){
     return{
-      "id": this.id,
-      "name": this.name,
-      "age": this.age,
-      "sex": this.sex,
-      "link_sheets": this.link_sheets,
-      "hasInserted": this.hasInserted};
+      "id": id,
+      "name": name,
+      "age": age,
+      "sex": sex,
+      "link_sheets": link_sheets,
+      "hasInserted": hasInserted};
     }
 }

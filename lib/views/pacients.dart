@@ -1,38 +1,34 @@
-import 'dart:ffi';
-import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:anotai_fisio/provider/pacients_provider.dart';
 import 'package:anotai_fisio/views/pacient_form.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
-import 'package:anotai_fisio/views/customize.dart';
 
 class PacientsList extends StatelessWidget {
+  const PacientsList({super.key});
+
   @override
   Widget build(BuildContext context) {
     final Pacients pacients = Provider.of(context);
-    final double fem = 1;
-    final double ffem = 1.5;
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Selecione o paciente'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Selecione o paciente'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: ListView.builder(
         itemCount: pacients.count,
         itemBuilder: (ctx, i) => PacientTile(pacients.byIndex(i)),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.add),
         onPressed: () {
           Navigator.push(
             context,
             MaterialPageRoute(builder: (context) => PacientForm(id: '')),
           );
         },
-        backgroundColor: Color(0xff552a7f),
+        backgroundColor: const Color(0xff552a7f),
+        child: const Icon(Icons.add),
       ),
     );
   }
@@ -41,28 +37,28 @@ class PacientsList extends StatelessWidget {
 class PacientTile extends StatelessWidget {
   final Pacient pacient;
 
-  const PacientTile(this.pacient);
+  const PacientTile(this.pacient, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final avatar = CircleAvatar(
+    const avatar = CircleAvatar(
+      backgroundColor: Color(0xff552a7f),
       child: Icon(
         Icons.person,
         color: Colors.white70,
       ),
-      backgroundColor: Color(0xff552a7f),
     );
     return InkWell(
       onTap: () {},
       child: ListTile(
         leading: avatar,
         title: Text(pacient.name),
-        trailing: Container(
+        trailing: SizedBox(
           width: 30,
           child: Align(
             alignment: Alignment.centerRight,
             child: IconButton(
-              icon: Icon(Icons.edit),
+              icon: const Icon(Icons.edit),
               onPressed: () {
                 Navigator.push(
                   context,

@@ -1,10 +1,8 @@
-import 'dart:ui';
 
 import 'package:anotai_fisio/start.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:anotai_fisio/views/pacients.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class End extends StatelessWidget {
@@ -24,13 +22,13 @@ class End extends StatelessWidget {
     double svgSize = 300;
     double screenPadding = 15;
     double rowGap = 20;
-    final Uri _url = Uri.parse(pacient_link_sheets!);
+    final Uri url = Uri.parse(pacient_link_sheets!);
     return Scaffold(
       body: Container(
           padding: EdgeInsets.fromLTRB(screenPadding * fem, screenPadding * fem,
               screenPadding * fem, screenPadding * fem),
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xFF9175AC),
           ),
           child: Column(
@@ -62,7 +60,7 @@ class End extends StatelessWidget {
                                 fontWeight: FontWeight.bold,
                                 height: 1.2 * ffem / fem,
                                 letterSpacing: 0.5 * fem,
-                                color: Color(0xffffffff),
+                                color: const Color(0xffffffff),
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -90,7 +88,7 @@ class End extends StatelessWidget {
                                 fontWeight: FontWeight.w400,
                                 height: 1.2 * ffem / fem,
                                 letterSpacing: 0.5 * fem,
-                                color: Color(0xffffffff),
+                                color: const Color(0xffffffff),
                               ),
                               textAlign: TextAlign.center,
                             ),
@@ -109,18 +107,18 @@ class End extends StatelessWidget {
                         fontWeight: FontWeight.w400,
                         height: 1.2 * ffem / fem,
                         letterSpacing: 0.5 * fem,
-                        color: Color(0xff0000ff),
+                        color: const Color(0xff0000ff),
                       ),
                     ),
-                    onTap: () => launchUrl(_url)),
+                    onTap: () => launchUrl(url)),
                 IconButton(
                     onPressed: () {
                       Navigator.pushReplacement(
                         context,
-                        MaterialPageRoute(builder: (context) => Start()),
+                        MaterialPageRoute(builder: (context) => const Start()),
                       );
                     },
-                    icon: Icon(Icons.exit_to_app,
+                    icon: const Icon(Icons.exit_to_app,
                         color: Color.fromARGB(255, 255, 255, 255))),
                 SizedBox(height: rowGap),
                 SizedBox(height: rowGap),

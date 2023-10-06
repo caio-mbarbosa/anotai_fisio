@@ -51,7 +51,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   Future<Pacient?> openPacientePopUp() => showDialog<Pacient>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Escolha o Paciente"),
           content: Pacientes(),
         ),
@@ -59,7 +59,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
   Future<Modelo?> openTemplatePopUp() => showDialog<Modelo>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Escolha o template"),
           content: Templates(),
         ),
@@ -139,7 +139,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
       children: [
         if (_recordState == RecordState.stop) ...[
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
-            Container(
+            SizedBox(
                 width: 100 * fem,
                 height: 100 * fem,
                 child: Column(
@@ -148,18 +148,18 @@ class _AudioRecorderState extends State<AudioRecorder> {
                       Container(
                           width: 48 * fem,
                           height: 48 * fem,
-                          margin: EdgeInsets.only(bottom: 4),
-                          decoration: ShapeDecoration(
+                          margin: const EdgeInsets.only(bottom: 4),
+                          decoration: const ShapeDecoration(
                               shape: CircleBorder(eccentricity: 1),
                               color: Colors.white),
                           child: IconButton.filled(
                               icon: const Icon(Icons.person),
-                              color: Color(0xff552a7f),
+                              color: const Color(0xff552a7f),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => PacientsList()),
+                                      builder: (context) => const PacientsList()),
                                 );
                               })),
                       Text(
@@ -169,7 +169,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
                           fontWeight: FontWeight.w400,
                           height: 1.2 * ffem / fem,
                           letterSpacing: 0.5 * fem,
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                         ),
                       )
                     ])),
@@ -180,10 +180,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
                 fontWeight: FontWeight.w400,
                 height: 1.2 * ffem / fem,
                 letterSpacing: 0.5 * fem,
-                color: Color(0xffffffff),
+                color: const Color(0xffffffff),
               ),
             ),
-            Container(
+            SizedBox(
                 width: 100 * fem,
                 height: 100 * fem,
                 child: Column(
@@ -192,18 +192,18 @@ class _AudioRecorderState extends State<AudioRecorder> {
                       Container(
                           width: 48 * fem,
                           height: 48 * fem,
-                          margin: EdgeInsets.only(bottom: 4),
-                          decoration: ShapeDecoration(
+                          margin: const EdgeInsets.only(bottom: 4),
+                          decoration: const ShapeDecoration(
                               shape: CircleBorder(eccentricity: 1),
                               color: Colors.white),
                           child: IconButton.filled(
                               icon: const Icon(Icons.file_open_outlined),
-                              color: Color(0xff552a7f),
+                              color: const Color(0xff552a7f),
                               onPressed: () {
                                 Navigator.push(
                                   context,
                                   MaterialPageRoute(
-                                      builder: (context) => CustomizeView()),
+                                      builder: (context) => const CustomizeView()),
                                 );
                               })),
                       Text(
@@ -213,7 +213,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
                           fontWeight: FontWeight.w400,
                           height: 1.2 * ffem / fem,
                           letterSpacing: 0.5 * fem,
-                          color: Color(0xffffffff),
+                          color: const Color(0xffffffff),
                         ),
                       )
                     ]))
@@ -235,7 +235,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
               onPressed: () {
                 _stop(null);
               },
-              icon: Icon(Icons.close, color: Color(0xFF000000))),
+              icon: const Icon(Icons.close, color: Color(0xFF000000))),
           _buildTimer(),
           _buildStartControl(),
           Row(mainAxisAlignment: MainAxisAlignment.spaceBetween, children: [
@@ -270,7 +270,7 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
     if (_recordState != RecordState.stop) {
       icon = const Icon(Icons.stop, color: Color(0xff552a7f), size: 30);
-      color = Color(0xFFFFFFFF);
+      color = const Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -325,10 +325,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
           ],
         );
       }
-      color = Color(0xff552a7f);
+      color = const Color(0xff552a7f);
     } else {
-      icon = Icon(Icons.mic, color: Color(0xFFFFFFFF), size: 45);
-      color = Color(0xff552a7f);
+      icon = const Icon(Icons.mic, color: Color(0xFFFFFFFF), size: 45);
+      color = const Color(0xff552a7f);
     }
 
     return AvatarGlow(
@@ -360,10 +360,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
 
     if (_recordState == RecordState.record) {
       icon = const Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
-      color = Color(0xFFFFFFFF);
+      color = const Color(0xFFFFFFFF);
     } else {
       icon = const Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
-      color = Color(0xFFFFFFFF);
+      color = const Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -430,7 +430,7 @@ class _RecordingState extends State<Recording> {
 
   Future<Pacient?> openPacientePopUp() => showDialog<Pacient>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Escolha o Paciente"),
           content: Pacientes(),
         ),
@@ -438,7 +438,7 @@ class _RecordingState extends State<Recording> {
 
   Future<Modelo?> openTemplatePopUp() => showDialog<Modelo>(
         context: context,
-        builder: (context) => AlertDialog(
+        builder: (context) => const AlertDialog(
           title: Text("Escolha o template"),
           content: Templates(),
         ),
@@ -454,7 +454,7 @@ class _RecordingState extends State<Recording> {
         appBar: showPlayer
             ? AppBar(
                 centerTitle: true,
-                title: Text('Conferir informações'),
+                title: const Text('Conferir informações'),
                 //titleTextStyle: TextStyle(color: Colors.black),
                 backgroundColor: const Color(0xff552a7f),
               )
@@ -464,7 +464,7 @@ class _RecordingState extends State<Recording> {
               screenPadding * fem, screenPadding * fem),
           width: double.infinity,
           decoration: BoxDecoration(
-            color: showPlayer ? Colors.white : Color(0xFF9175AC),
+            color: showPlayer ? Colors.white : const Color(0xFF9175AC),
           ),
           child: showPlayer
               ? Column(
@@ -474,8 +474,8 @@ class _RecordingState extends State<Recording> {
                         children: <Widget>[
                           Container(
                             width: double.infinity,
-                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                            padding: EdgeInsets.all(20),
+                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.circular(5),
@@ -484,7 +484,7 @@ class _RecordingState extends State<Recording> {
                             child: InkWell(
                               child: Text(
                                 pacient!.name,
-                                style: TextStyle(
+                                style: const TextStyle(
                                     color: Colors.black, fontSize: 18),
                               ),
                               onTap: () async {
@@ -501,10 +501,10 @@ class _RecordingState extends State<Recording> {
                             left: 30,
                             top: 12,
                             child: Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   bottom: 10, left: 10, right: 10),
                               color: Colors.white,
-                              child: Text(
+                              child: const Text(
                                 'Paciente',
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 12),
@@ -517,8 +517,8 @@ class _RecordingState extends State<Recording> {
                         children: <Widget>[
                           Container(
                             width: double.infinity,
-                            margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                            padding: EdgeInsets.all(20),
+                            margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                            padding: const EdgeInsets.all(20),
                             decoration: BoxDecoration(
                               border: Border.all(color: Colors.grey, width: 1),
                               borderRadius: BorderRadius.circular(5),
@@ -526,7 +526,7 @@ class _RecordingState extends State<Recording> {
                             ),
                             child: InkWell(
                               child: Text(modelo!.nome,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       color: Colors.black, fontSize: 18)),
                               onTap: () async {
                                 Modelo? template = await openTemplatePopUp();
@@ -542,10 +542,10 @@ class _RecordingState extends State<Recording> {
                             left: 30,
                             top: 12,
                             child: Container(
-                              padding: EdgeInsets.only(
+                              padding: const EdgeInsets.only(
                                   bottom: 10, left: 10, right: 10),
                               color: Colors.white,
-                              child: Text(
+                              child: const Text(
                                 'Template',
                                 style: TextStyle(
                                     color: Colors.black, fontSize: 12),

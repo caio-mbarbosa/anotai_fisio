@@ -1,6 +1,4 @@
 // ignore_for_file: avoid_print, must_be_immutable
-import 'package:flutter_svg/flutter_svg.dart';
-import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'record.dart';
@@ -130,7 +128,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       print("Button clicked!");
                       Navigator.push(
                         context,
-                        MaterialPageRoute(builder: (context) => Recording()),
+                        MaterialPageRoute(builder: (context) => const Recording()),
                       );
                     },
                     child: Container(
@@ -149,7 +147,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w500,
                             height: 1.4285714286 * ffem / fem,
                             letterSpacing: 0.1000000015 * fem,
-                            color: Color(0xff552a7f),
+                            color: const Color(0xff552a7f),
                           ),
                         ),
                       ),
@@ -162,7 +160,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                       padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
                       margin: const EdgeInsets.only(bottom: 48),
                       decoration: BoxDecoration(
-                        color: Color.fromARGB(0, 0, 0, 0),
+                        color: const Color.fromARGB(0, 0, 0, 0),
                         borderRadius: BorderRadius.circular(20),
                       ),
                       child: Center(
@@ -173,7 +171,7 @@ class _OnBoardingScreenState extends State<OnBoardingScreen> {
                             fontWeight: FontWeight.w500,
                             height: 1.4285714286 * ffem / fem,
                             letterSpacing: 0.1000000015 * fem,
-                            color: Color.fromARGB(0, 0, 0, 0),
+                            color: const Color.fromARGB(0, 0, 0, 0),
                           ),
                         ),
                       ),
@@ -249,8 +247,8 @@ class DotIndicator extends StatelessWidget {
       height: 8,
       width: 8,
       decoration: BoxDecoration(
-        color: isActive ? Color(0xff21005D) : Colors.white,
-        border: isActive ? null : Border.all(color: Color(0xff21005D)),
+        color: isActive ? const Color(0xff21005D) : Colors.white,
+        border: isActive ? null : Border.all(color: const Color(0xff21005D)),
         borderRadius: const BorderRadius.all(
           Radius.circular(12),
         ),

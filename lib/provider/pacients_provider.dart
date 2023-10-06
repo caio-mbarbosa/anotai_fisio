@@ -1,10 +1,8 @@
 import 'dart:math';
-import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:flutter/material.dart';
 import 'dart:convert';
 import 'dart:io';
-import 'package:flutter/services.dart' show rootBundle;
 import 'package:path_provider/path_provider.dart';
 
 Future<Map<String, Pacient>> loadAndIterateJSON() async{

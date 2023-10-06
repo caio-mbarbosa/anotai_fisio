@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:anotai_fisio/views/pacients.dart';
 
 class Home extends StatelessWidget {
+  const Home({super.key});
+
   @override
   Widget build(BuildContext context) {
     double fem = .9;
@@ -17,7 +19,7 @@ class Home extends StatelessWidget {
           padding: EdgeInsets.fromLTRB(screenPadding * fem, screenPadding * fem,
               screenPadding * fem, screenPadding * fem),
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             gradient: LinearGradient(
               begin: Alignment(0, -1),
               end: Alignment(-0, 1),
@@ -59,7 +61,7 @@ class Home extends StatelessWidget {
                                   fontWeight: FontWeight.w400,
                                   height: 1.2 * ffem / fem,
                                   letterSpacing: 0.5 * fem,
-                                  color: Color(0xffffffff),
+                                  color: const Color(0xffffffff),
                                 ),
                               ),
                             ),
@@ -79,12 +81,12 @@ class Home extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PacientsList()),
+                              builder: (context) => const PacientsList()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
-                        backgroundColor: Color.fromRGBO(247, 242, 250, 1),
+                        backgroundColor: const Color.fromRGBO(247, 242, 250, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100 * fem)),
                       ),
@@ -99,7 +101,7 @@ class Home extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 height: 1.4285714286 * ffem / fem,
                                 letterSpacing: 0.1000000015 * fem,
-                                color: Color(0xff552a7f),
+                                color: const Color(0xff552a7f),
                               ),
                             ),
                           ),
@@ -117,7 +119,7 @@ class Home extends StatelessWidget {
                       onPressed: null,
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
-                        backgroundColor: Color.fromRGBO(247, 242, 250, 1),
+                        backgroundColor: const Color.fromRGBO(247, 242, 250, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100 * fem)),
                       ),
@@ -132,7 +134,7 @@ class Home extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 height: 1.4285714286 * ffem / fem,
                                 letterSpacing: 0.1000000015 * fem,
-                                color: Color(0xff552a7f),
+                                color: const Color(0xff552a7f),
                               ),
                             ),
                           ),
@@ -148,11 +150,11 @@ class Home extends StatelessWidget {
                     child: Container(
                         width: 48 * fem,
                         height: 48 * fem,
-                        decoration: ShapeDecoration(
+                        decoration: const ShapeDecoration(
                             shape: CircleBorder(eccentricity: 1),
                             color: Color.fromRGBO(247, 242, 250, .5)),
-                        child: IconButton.filled(
-                            icon: const Icon(Icons.question_mark),
+                        child: const IconButton.filled(
+                            icon: Icon(Icons.question_mark),
                             color: Color(0xff552a7f),
                             onPressed: null))),
               ),

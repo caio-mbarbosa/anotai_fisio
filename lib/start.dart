@@ -4,6 +4,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'onboarding.dart';
 
 class Start extends StatelessWidget {
+  const Start({super.key});
+
   @override
   Widget build(BuildContext context) {
     double fem = .9;
@@ -19,7 +21,7 @@ class Start extends StatelessWidget {
               screenPadding * fem,
               screenPadding * fem),
           width: double.infinity,
-          decoration: BoxDecoration(
+          decoration: const BoxDecoration(
             color: Color(0xff552a7f),
           ),
           child: Column(
@@ -31,7 +33,8 @@ class Start extends StatelessWidget {
                 height: svgSize * fem,
                 child: SvgPicture.asset('assets/logoanotai.svg',
                     semanticsLabel: 'Logo',
-                    color: Color.fromRGBO(255, 255, 255, 1)),
+                    // ignore: deprecated_member_use
+                    color: const Color.fromRGBO(255, 255, 255, 1)),
               ),
               Expanded(
                 child: Align(
@@ -46,12 +49,12 @@ class Start extends StatelessWidget {
                       onPressed: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => OnBoardingScreen()),
+                          MaterialPageRoute(builder: (context) => const OnBoardingScreen()),
                         );
                       },
                       style: ElevatedButton.styleFrom(
                         padding: EdgeInsets.zero,
-                        backgroundColor: Color.fromRGBO(247, 242, 250, 1),
+                        backgroundColor: const Color.fromRGBO(247, 242, 250, 1),
                         shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(100 * fem)),
                       ),
@@ -65,7 +68,7 @@ class Start extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               height: 1.4285714286 * ffem / fem,
                               letterSpacing: 0.1000000015 * fem,
-                              color: Color(0xff552a7f),
+                              color: const Color(0xff552a7f),
                             ),
                           ),
                         ),

@@ -1,8 +1,6 @@
 import 'package:anotai_fisio/models/pacient.dart';
 import 'package:anotai_fisio/provider/pacients_provider.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:path/path.dart';
 import 'package:provider/provider.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:url_launcher/url_launcher.dart';
@@ -26,7 +24,7 @@ class PacientForm extends StatelessWidget {
   final _form = GlobalKey<FormState>();
   final Map<String, String> _formData = {};
 
-  PacientForm({required this.id});
+  PacientForm({super.key, required this.id});
 
   void _loadFormData(String id, BuildContext context) {
     if (id != '') {
@@ -50,12 +48,11 @@ class PacientForm extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: Text('Formulario paciente'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Formulario paciente'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       floatingActionButton: FloatingActionButton(
-        child: Icon(Icons.save),
-        backgroundColor: Color(0xff552a7f),
+        backgroundColor: const Color(0xff552a7f),
         onPressed: () {
           final isValid = _form.currentState?.validate();
 
@@ -72,16 +69,17 @@ class PacientForm extends StatelessWidget {
             print('dei put de um pacient');
           }
         },
+        child: const Icon(Icons.save),
       ),
       body: Padding(
-        padding: EdgeInsets.all(15),
+        padding: const EdgeInsets.all(15),
         child: Form(
             key: _form,
             child: Column(
               children: <Widget>[
                 TextFormField(
                   initialValue: _formData['name'],
-                  decoration: InputDecoration(labelText: 'Nome'),
+                  decoration: const InputDecoration(labelText: 'Nome'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nome invalido';
@@ -94,7 +92,7 @@ class PacientForm extends StatelessWidget {
                 ),
                 TextFormField(
                   initialValue: _formData['age'],
-                  decoration: InputDecoration(labelText: 'Idade'),
+                  decoration: const InputDecoration(labelText: 'Idade'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nome invalido';
@@ -107,7 +105,7 @@ class PacientForm extends StatelessWidget {
                 ),
                 TextFormField(
                   initialValue: _formData['sex'],
-                  decoration: InputDecoration(labelText: 'Sexo'),
+                  decoration: const InputDecoration(labelText: 'Sexo'),
                   validator: (value) {
                     if (value == null || value.isEmpty) {
                       return 'Nome invalido';
@@ -121,7 +119,7 @@ class PacientForm extends StatelessWidget {
                 TextFormField(
                     initialValue: _formData['link_sheets'],
                     decoration:
-                        InputDecoration(labelText: 'Link Google Sheets'),
+                        const InputDecoration(labelText: 'Link Google Sheets'),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Nome invalido';
@@ -135,15 +133,15 @@ class PacientForm extends StatelessWidget {
                 _formData['link_sheets'] != null
                     ? InkWell(
                         onTap: () {
-                          final Uri _url = Uri.parse(_formData['link_sheets']!);
+                          final Uri url = Uri.parse(_formData['link_sheets']!);
                           print("Button clicked!");
-                          launchUrl(_url);
+                          launchUrl(url);
                         },
                         child: Container(
                           width: 220,
                           padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
                           decoration: BoxDecoration(
-                            color: Color(0xff552a7f),
+                            color: const Color(0xff552a7f),
                             borderRadius: BorderRadius.circular(20),
                           ),
                           child: Center(

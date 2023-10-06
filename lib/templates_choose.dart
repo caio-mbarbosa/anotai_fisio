@@ -8,7 +8,7 @@ class Templates extends StatefulWidget {
   @override
   _ModelosScreenState createState() => _ModelosScreenState();
 
-  Templates();
+  const Templates({super.key});
 }
 
 class _ModelosScreenState extends State<Templates> {
@@ -86,7 +86,7 @@ class _ModelosScreenState extends State<Templates> {
                   },
                   title: Text(modelos[index].nome),
                   trailing: IconButton(
-                    icon: Icon(Icons.delete),
+                    icon: const Icon(Icons.delete),
                     onPressed: () {
                       removerModelo(index);
                     },
@@ -96,7 +96,7 @@ class _ModelosScreenState extends State<Templates> {
             },
           ),
           floatingActionButton: FloatingActionButton(
-            backgroundColor: Color(0xff552a7f),
+            backgroundColor: const Color(0xff552a7f),
             onPressed: () {
               Navigator.push(
                 context,
@@ -109,7 +109,7 @@ class _ModelosScreenState extends State<Templates> {
                 }
               });
             },
-            child: Icon(Icons.add),
+            child: const Icon(Icons.add),
           ),
         ));
   }
@@ -118,7 +118,7 @@ class _ModelosScreenState extends State<Templates> {
 class EditScreen extends StatefulWidget {
   final Modelo modelo;
 
-  EditScreen({required this.modelo});
+  const EditScreen({super.key, required this.modelo});
 
   @override
   _EditScreenState createState() => _EditScreenState();
@@ -161,8 +161,8 @@ class _EditScreenState extends State<EditScreen> {
     double ffem = 1;
     return Scaffold(
       appBar: AppBar(
-        title: Text('${widget.modelo.nome}'),
-        backgroundColor: Color(0xff552a7f),
+        title: Text(widget.modelo.nome),
+        backgroundColor: const Color(0xff552a7f),
       ),
       backgroundColor: Colors.white,
       body: Column(
@@ -175,8 +175,8 @@ class _EditScreenState extends State<EditScreen> {
                   children: <Widget>[
                     Container(
                         width: double.infinity,
-                        margin: EdgeInsets.fromLTRB(20, 20, 20, 10),
-                        padding: EdgeInsets.all(20),
+                        margin: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+                        padding: const EdgeInsets.all(20),
                         decoration: BoxDecoration(
                           border: Border.all(color: Colors.grey, width: 1),
                           borderRadius: BorderRadius.circular(5),
@@ -187,7 +187,7 @@ class _EditScreenState extends State<EditScreen> {
                           children: [
                             Text(campos[index]),
                             IconButton(
-                              icon: Icon(Icons.delete),
+                              icon: const Icon(Icons.delete),
                               onPressed: () {
                                 removerCampo(index);
                               },
@@ -196,11 +196,11 @@ class _EditScreenState extends State<EditScreen> {
                         )),
                     Center(
                       child: Container(
-                        padding: EdgeInsets.all(10),
+                        padding: const EdgeInsets.all(10),
                         color: Colors.white,
                         child: Text(
                           'Campo ${index + 1}',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 18,
                             fontWeight: FontWeight.bold,
@@ -222,13 +222,13 @@ class _EditScreenState extends State<EditScreen> {
                     width: 48 * fem,
                     height: 48 * fem,
                     alignment: Alignment.center,
-                    decoration: ShapeDecoration(
+                    decoration: const ShapeDecoration(
                         shape: CircleBorder(eccentricity: 1),
-                        color: const Color.fromARGB(255, 213, 213, 213)),
+                        color: Color.fromARGB(255, 213, 213, 213)),
                     child: IconButton.filled(
                       iconSize: 25,
                       alignment: Alignment.center,
-                      icon: Icon(Icons.add),
+                      icon: const Icon(Icons.add),
                       color: const Color.fromARGB(255, 90, 90, 90),
                       onPressed: () {
                         Navigator.push(
@@ -256,7 +256,7 @@ class _EditScreenState extends State<EditScreen> {
               padding: const EdgeInsets.fromLTRB(10, 4, 10, 4),
               margin: const EdgeInsets.only(bottom: 48),
               decoration: BoxDecoration(
-                color: Color(0xff552a7f),
+                color: const Color(0xff552a7f),
                 borderRadius: BorderRadius.circular(20),
               ),
               child: Center(
@@ -286,35 +286,37 @@ class _EditScreenState extends State<EditScreen> {
 class NovoModeloScreen extends StatelessWidget {
   final TextEditingController _modeloController = TextEditingController();
 
+  NovoModeloScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Novo Modelo'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Novo Modelo'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Novo Modelo',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _modeloController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nome do Modelo',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               style: ElevatedButton.styleFrom(
-                backgroundColor: Color(0xff552a7f),
+                backgroundColor: const Color(0xff552a7f),
               ),
               onPressed: () {
                 String nomeModelo = _modeloController.text;
@@ -329,7 +331,7 @@ class NovoModeloScreen extends StatelessWidget {
                   );
                 }
               },
-              child: Text('Adicionar Modelo'),
+              child: const Text('Adicionar Modelo'),
             ),
           ],
         ),
@@ -341,40 +343,42 @@ class NovoModeloScreen extends StatelessWidget {
 class NovoCampoScreen extends StatelessWidget {
   final TextEditingController _campoController = TextEditingController();
 
+  NovoCampoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Novo Campo'),
-        backgroundColor: Color(0xff552a7f),
+        title: const Text('Novo Campo'),
+        backgroundColor: const Color(0xff552a7f),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
           children: [
-            Text(
+            const Text(
               'Novo Campo',
               style: TextStyle(
                 fontSize: 24.0,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             TextField(
               controller: _campoController,
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Nome do Campo',
               ),
             ),
-            SizedBox(height: 16.0),
+            const SizedBox(height: 16.0),
             ElevatedButton(
               onPressed: () {
                 String novoCampo = _campoController.text;
                 Navigator.pop(context, novoCampo);
               },
               style:
-                  ElevatedButton.styleFrom(backgroundColor: Color(0xff552a7f)),
-              child: Text('Adicionar Campo'),
+                  ElevatedButton.styleFrom(backgroundColor: const Color(0xff552a7f)),
+              child: const Text('Adicionar Campo'),
             ),
           ],
         ),

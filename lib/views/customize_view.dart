@@ -4,6 +4,8 @@ class OldPacientsView extends StatelessWidget {
   final double fem = 1;
   final double ffem = 1.5;
 
+  const OldPacientsView({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -11,7 +13,7 @@ class OldPacientsView extends StatelessWidget {
         // files9hq (2:6)
         padding: EdgeInsets.fromLTRB(24 * fem, 59 * fem, 26 * fem, 43 * fem),
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Color(0xffffffff),
         ),
         child:
@@ -36,7 +38,7 @@ class OldPacientsView extends StatelessWidget {
                       Container(
                         width: 200, // Largura desejada do Container
                         height: 200, // Altura desejada do Container
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           image: DecorationImage(
                             image: AssetImage('assets/return_icon.png'), // Caminho para a imagem no seu projeto
                             fit: BoxFit.cover, // Ajuste da imagem dentro do Container
@@ -58,7 +60,7 @@ class OldPacientsView extends StatelessWidget {
                       fontWeight: FontWeight.w400,
                       height: 1.2 * ffem / fem,
                       letterSpacing: 0.5 * fem,
-                      color: Color(0xff1d1b20),
+                      color: const Color(0xff1d1b20),
                     ),
                   ),
                 ],
@@ -78,16 +80,16 @@ class OldPacientsView extends StatelessWidget {
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration(
-                  color: Color(0xfff7f2fa),
+                  color: const Color(0xfff7f2fa),
                   borderRadius: BorderRadius.circular(12 * fem),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0x26000000),
+                      color: const Color(0x26000000),
                       offset: Offset(0 * fem, 1 * fem),
                       blurRadius: 1.5 * fem,
                     ),
                     BoxShadow(
-                      color: Color(0x4c000000),
+                      color: const Color(0x4c000000),
                       offset: Offset(0 * fem, 1 * fem),
                       blurRadius: 1 * fem,
                     ),
@@ -100,11 +102,11 @@ class OldPacientsView extends StatelessWidget {
                   width: double.infinity,
                   height: double.infinity,
                   decoration: BoxDecoration(
-                    border: Border.all(color: Color(0xffcac4d0)),
+                    border: Border.all(color: const Color(0xffcac4d0)),
                     borderRadius: BorderRadius.circular(12 * fem),
                   ),
                   child:
-                  Container(
+                  SizedBox(
                     // headerjxs (I1:666;52350:28186)
                     width: double.infinity,
                     height: 70.5 * fem,
@@ -126,7 +128,7 @@ class OldPacientsView extends StatelessWidget {
                                 width: 40 * fem,
                                 height: 40 * fem,
                                 decoration: BoxDecoration(
-                                  color: Color(0xff552a7f),
+                                  color: const Color(0xff552a7f),
                                   borderRadius: BorderRadius.circular(20 * fem),
                                 ),
                                 child:
@@ -143,7 +145,7 @@ class OldPacientsView extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         height: 1.5 * ffem / fem,
                                         letterSpacing: 0.150000006 * fem,
-                                        color: Color(0xfffef7ff),
+                                        color: const Color(0xfffef7ff),
                                       ),
                                     ),
                                   ),
@@ -163,7 +165,7 @@ class OldPacientsView extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     height: 1.5 * ffem / fem,
                                     letterSpacing: 0.150000006 * fem,
-                                    color: Color(0xff1d1b20),
+                                    color: const Color(0xff1d1b20),
                                   ),
                                 ),
                               ),
@@ -176,7 +178,7 @@ class OldPacientsView extends StatelessWidget {
                           width: 80 * fem,
                           height: 69 * fem,
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xffcac4d0)),
+                            border: Border.all(color: const Color(0xffcac4d0)),
                           ),
                         ),
                       ],
@@ -199,16 +201,16 @@ class OldPacientsView extends StatelessWidget {
                 width: double.infinity,
                 height: double.infinity,
                 decoration: BoxDecoration (
-                  color: Color(0xfff7f2fa),
+                  color: const Color(0xfff7f2fa),
                   borderRadius: BorderRadius.circular(12*fem),
                   boxShadow: [
                     BoxShadow(
-                      color: Color(0x26000000),
+                      color: const Color(0x26000000),
                       offset: Offset(0*fem, 1*fem),
                       blurRadius: 1.5*fem,
                     ),
                     BoxShadow(
-                      color: Color(0x4c000000),
+                      color: const Color(0x4c000000),
                       offset: Offset(0*fem, 1*fem),
                       blurRadius: 1*fem,
                     ),
@@ -221,11 +223,11 @@ class OldPacientsView extends StatelessWidget {
                   width: double.infinity,
                   height: double.infinity,
                   decoration: BoxDecoration (
-                    border: Border.all(color: Color(0xffcac4d0)),
+                    border: Border.all(color: const Color(0xffcac4d0)),
                     borderRadius: BorderRadius.circular(12*fem),
                   ),
                   child:
-                  Container(
+                  SizedBox(
                     // header49u (I17:5449;52350:28186)
                     width: double.infinity,
                     height: 70.5*fem,
@@ -246,7 +248,7 @@ class OldPacientsView extends StatelessWidget {
                                 width: 40*fem,
                                 height: 40*fem,
                                 decoration: BoxDecoration (
-                                  color: Color(0xff552a7f),
+                                  color: const Color(0xff552a7f),
                                   borderRadius: BorderRadius.circular(20*fem),
                                 ),
                                 child:
@@ -263,7 +265,7 @@ class OldPacientsView extends StatelessWidget {
                                         fontWeight: FontWeight.w500,
                                         height: 1.5*ffem/fem,
                                         letterSpacing: 0.150000006*fem,
-                                        color: Color(0xfffef7ff),
+                                        color: const Color(0xfffef7ff),
                                       ),
                                     ),
                                   ),
@@ -282,7 +284,7 @@ class OldPacientsView extends StatelessWidget {
                                     fontWeight: FontWeight.w500,
                                     height: 1.5*ffem/fem,
                                     letterSpacing: 0.150000006*fem,
-                                    color: Color(0xff1d1b20),
+                                    color: const Color(0xff1d1b20),
                                   ),
                                 ),
                               ),
@@ -295,7 +297,7 @@ class OldPacientsView extends StatelessWidget {
                           width: 80*fem,
                           height: 69*fem,
                           decoration: BoxDecoration (
-                            border: Border.all(color: Color(0xffcac4d0)),
+                            border: Border.all(color: const Color(0xffcac4d0)),
                           ),
                         ),
                       ],
@@ -360,7 +362,7 @@ class OldPacientsView extends StatelessWidget {
                               fontWeight: FontWeight.w500,
                               height: 0.625*ffem/fem,
                               letterSpacing: 0.32*fem,
-                              color: Color(0xff552a7f),
+                              color: const Color(0xff552a7f),
                             ),
                           ),
                         ),

@@ -1,5 +1,3 @@
-import 'dart:async';
-import 'package:anotai_fisio/models/pacient.dart';
 import 'package:anotai_fisio/onboarding.dart';
 import 'package:anotai_fisio/start.dart';
 import 'package:anotai_fisio/views/pacients.dart';
@@ -7,10 +5,7 @@ import 'package:anotai_fisio/views/customize.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:record/record.dart';
 import 'package:anotai_fisio/provider/pacients_provider.dart';
-import 'package:anotai_fisio/audio_player.dart';
-import 'package:anotai_fisio/data/dummy_pacients.dart';
 import 'record.dart';
 import 'home.dart';
 import 'end.dart';
@@ -21,7 +16,7 @@ void main() {
       providers: [
         ChangeNotifierProvider(create: (_) => Pacients()),
       ],
-      child: MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false),
+      child: const MaterialApp(home: MyApp(), debugShowCheckedModeBanner: false),
     ),
   );
 }
@@ -50,12 +45,12 @@ class MyApp extends StatelessWidget {
                   children: [
                     const DrawerHeader(
                       decoration: BoxDecoration(
-                        color: const Color(0xff552a7f),
+                        color: Color(0xff552a7f),
                       ),
                       child: Text('Menu'),
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.record_voice_over,
                       ),
                       title: const Text('Gravação'),
@@ -76,31 +71,31 @@ class MyApp extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.home,
                       ),
                       title: const Text('Home'),
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Home()),
+                          MaterialPageRoute(builder: (context) => const Home()),
                         );
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.start,
                       ),
                       title: const Text('Start'),
                       onTap: () {
                         Navigator.push(
                           context,
-                          MaterialPageRoute(builder: (context) => Start()),
+                          MaterialPageRoute(builder: (context) => const Start()),
                         );
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.train,
                       ),
                       title: const Text('Cadastrar Paciente'),
@@ -108,12 +103,12 @@ class MyApp extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => PacientsList()),
+                              builder: (context) => const PacientsList()),
                         );
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.addchart_sharp,
                       ),
                       title: const Text('Customizar Prontuários'),
@@ -121,12 +116,12 @@ class MyApp extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => CustomizeView()),
+                              builder: (context) => const CustomizeView()),
                         );
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.exit_to_app,
                       ),
                       title: const Text('End'),
@@ -134,7 +129,7 @@ class MyApp extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => End(
+                              builder: (context) => const End(
                                   pacient_link_sheets:
                                       '1uNxaDQBfw4DArgUpP51EucaRNLnrwghR5VpO8hmAoW8',
                                   mensagemCode: 'Placeholder')),
@@ -142,7 +137,7 @@ class MyApp extends StatelessWidget {
                       },
                     ),
                     ListTile(
-                      leading: Icon(
+                      leading: const Icon(
                         Icons.on_device_training,
                       ),
                       title: const Text('Onboarding'),
@@ -150,7 +145,7 @@ class MyApp extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => OnBoardingScreen()),
+                              builder: (context) => const OnBoardingScreen()),
                         );
                       },
                     ),
@@ -158,6 +153,6 @@ class MyApp extends StatelessWidget {
                 ),
               )
             : null,
-        body: Start());
+        body: const Start());
   }
 }
