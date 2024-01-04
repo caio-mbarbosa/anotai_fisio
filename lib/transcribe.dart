@@ -38,9 +38,9 @@ class Transcribe extends StatefulWidget {
 
   const Transcribe(
       {Key? key,
-      required this.audioPath,
-      required this.campos,
-      required this.pacient})
+        required this.audioPath,
+        required this.campos,
+        required this.pacient})
       : super(key: key);
 
   @override
@@ -57,8 +57,8 @@ class _TranscribeState extends State<Transcribe> {
 
   _TranscribeState(
       {required this.campos,
-      required this.pacient,
-      required this.mensagemCode});
+        required this.pacient,
+        required this.mensagemCode});
 
   @override
   void initState() {
@@ -76,6 +76,7 @@ class _TranscribeState extends State<Transcribe> {
     var response = await request.send();
     var newresponse = await http.Response.fromStream(response);
     final responseData = json.decode(utf8.decode(newresponse.bodyBytes));
+    print(responseData);
     return responseData['text'];
   }
 
@@ -116,12 +117,12 @@ class _TranscribeState extends State<Transcribe> {
     resultadoCampos = resultadoCampos.substring(0, resultadoCampos.length - 2);
     OpenAI.apiKey = apiSecretKey;
     final prompt =
-        '''Você vai ler um relato de um fisioterapeuta originado de uma ferramenta 'speech to text' após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $resultadoCampos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita e os valores de cada chave devem ser somente uma string (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:" + '\n'+'\n' $texto''';
+    '''Você vai ler um relato de um fisioterapeuta originado de uma ferramenta 'speech to text' após a consulta com o cliente, ajude ele a dividir as informações da conversa nos campos a seguir: $resultadoCampos. Formate o resultado da sua análise para o formato JSON com apenas as chaves inclusas nos campos previstos com a mesma exata escrita e os valores de cada chave devem ser somente uma string (podem existir campos vazios caso não sejam mencionados na conversa), responda APENAS com o JSON e NADA mais, esse é o texto:" + '\n'+'\n' $texto''';
     print("prompt final:");
     print(prompt);
 
     OpenAIChatCompletionModel chatCompletion =
-        await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
+    await OpenAI.instance.chat.create(model: "gpt-3.5-turbo", messages: [
       OpenAIChatCompletionChoiceMessageModel(
         content: prompt,
         role: OpenAIChatMessageRole.user,
@@ -132,7 +133,7 @@ class _TranscribeState extends State<Transcribe> {
       return error;
     }
     var resultadoGpt =
-        json.decode(chatCompletion.choices.first.message.content);
+    json.decode(chatCompletion.choices.first.message.content);
 
     print("retorno do GPT");
     print(resultadoGpt);
@@ -183,22 +184,22 @@ class _TranscribeState extends State<Transcribe> {
                       if (result == 1) {
                         // Handle error finding spreadsheet
                         mensagemCode =
-                            'Houve um erro ao acessar a planilha, verifique o link no perfil';
+                        'Houve um erro ao acessar a planilha, verifique o link no perfil';
                         print('código 1 de retorno');
                       } else if (result == 2) {
                         // Handle error with GPT
                         mensagemCode =
-                            'Houve um erro ao processar os dados, tente novamente';
+                        'Houve um erro ao processar os dados, tente novamente';
                         print('código 2 de retorno');
                       } else if (result == 3) {
                         // Handle error inserting spreadsheet
                         mensagemCode =
-                            'Houve um erro ao inserir os dados, tente novamente';
+                        'Houve um erro ao inserir os dados, tente novamente';
                         print('código 3 de retorno');
                       } else if (result == 0) {
                         // No error
                         mensagemCode =
-                            'A planilha preenchida pode ser acessada';
+                        'A planilha preenchida pode ser acessada';
                         print('código 0 de retorno');
                       }
                       // Agora que você atualizou a mensagemCode, navegue para a próxima tela aqui
@@ -243,7 +244,7 @@ class _TranscribeState extends State<Transcribe> {
                   )),
               Visibility(
                 visible:
-                    _isLoading, // Controla a visibilidade do CircularProgressIndicator
+                _isLoading, // Controla a visibilidade do CircularProgressIndicator
                 child: CircularProgressIndicator(
                   color: Colors.deepPurple,
                   backgroundColor: Colors.black,

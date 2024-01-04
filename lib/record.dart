@@ -100,6 +100,10 @@ class _AudioRecorderState extends State<AudioRecorder> {
   }
 
   Future<void> _stop(template) async {
+    _timer?.cancel();
+    _recordDuration = 0;
+    final path = await _audioRecorder.stop();
+
     final Pacient? paciente;
     if (template != null) {
       paciente = await openPacientePopUp();
@@ -107,11 +111,6 @@ class _AudioRecorderState extends State<AudioRecorder> {
       paciente = null;
     }
     print(paciente);
-
-    _timer?.cancel();
-    _recordDuration = 0;
-
-    final path = await _audioRecorder.stop();
 
     if (path != null && template != null && paciente != null) {
       widget.onStop(path, template, paciente);
