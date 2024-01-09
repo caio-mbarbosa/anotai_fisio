@@ -142,6 +142,8 @@ class _EditScreenState extends State<EditScreen> {
   }
 
   void salvarCampos() async {
+    print("Campos a serem salvos:");
+    print(campos);
     widget.modelo.campos = campos;
     SharedPreferences prefs = await SharedPreferences.getInstance();
     List<String> modelosStringList = prefs.getStringList('modelos') ?? [];
@@ -244,7 +246,7 @@ class _EditScreenState extends State<EditScreen> {
                             });
                           }
                         });
-                        salvarCampos();
+                        //salvarCampos();
                       },
                     )),
               ],
@@ -273,6 +275,7 @@ class _EditScreenState extends State<EditScreen> {
               ),
             ),
             onTap: () {
+              salvarCampos();
               Navigator.of(context).pop();
               Navigator.of(context).pop(widget.modelo);
             },
