@@ -88,14 +88,15 @@ class AudioPlayerState extends State<AudioPlayer> {
 
   Widget _buildControl() {
     Icon icon;
+    bool _isButtonDisabled = false;
     Color color;
 
     if (_audioPlayer.state == ap.PlayerState.playing) {
-      icon = const Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
-      color = const Color(0xFFFFFFFF);
+      icon = Icon(Icons.pause, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     } else {
-      icon = const Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
-      color = const Color(0xFFFFFFFF);
+      icon = Icon(Icons.play_arrow, color: Color(0xff552a7f), size: 30);
+      color = Color(0xFFFFFFFF);
     }
 
     return ClipOval(
@@ -105,11 +106,26 @@ class AudioPlayerState extends State<AudioPlayer> {
           child:
           SizedBox(width: _controlSize, height: _controlSize, child: icon),
           onTap: () {
-            if (_audioPlayer.state == ap.PlayerState.playing) {
-              pause();
-            } else {
-              play();
-            }
+            if (!_isButtonDisabled) {
+              // Desabilitar o botão temporariamente
+              setState(() {
+                _isButtonDisabled = true;
+              });
+
+              Future.delayed(Duration(milliseconds: 150), () {
+                // Habilitar o botão novamente após o atraso
+                setState(() {
+                  _isButtonDisabled = false;
+                });
+              });
+              setState(() {
+                if (_audioPlayer.state == ap.PlayerState.playing) {
+                  pause();
+                } else {
+                  play();
+                }
+              });
+            };
           },
         ),
       ),
